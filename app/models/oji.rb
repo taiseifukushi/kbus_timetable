@@ -1,0 +1,2 @@
+class Oji < Station
+end

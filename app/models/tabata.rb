@@ -1,0 +1,2 @@
+class Tabata < Station
+end
