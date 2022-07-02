@@ -91,11 +91,8 @@ GEM
     diff-lcs (1.5.0)
     digest (3.1.0)
     erubi (1.10.0)
-    factory_girl (4.9.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
-      railties (>= 3.0.0)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.10.0)
@@ -246,7 +243,7 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
-  factory_girl_rails
+  factory_bot
   importmap-rails
   jbuilder
   pg

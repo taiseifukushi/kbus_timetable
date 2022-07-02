@@ -1,0 +1,2 @@
+class Jikan < ApplicationRecord
+end
