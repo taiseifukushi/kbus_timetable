@@ -30,7 +30,7 @@ https://mermaid-js.github.io/mermaid/#/entityRelationshipDiagram
 
 ```mermaid
 erDiagram
-    STATION ||--|{ TIME: s
+    STATION ||--|{ TIME: station-time
     STATION {
         int id PK
         string name
