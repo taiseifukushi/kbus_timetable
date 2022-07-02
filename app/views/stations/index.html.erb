@@ -7,6 +7,10 @@
   <%= form.submit "検索" %>
 <% end %>
 
-<%= turbo_frame_tag "cats-list" do %>
+<%= search_form_for @search, html: { data: { turbo_frame: "cats-list" } } do |f| %>
+<% end %>
+
+<%= turbo_frame_tag "result" do %>
   <div>置換したい箇所</div>
+  <div>検索結果を3件表示</div>
 <% end %>
