@@ -2,7 +2,7 @@
 <p>Find me in app/views/base_apis/index.html.erb</p>
 
 <%# https://railsdoc.com/page/form_with %>
-<%= form_with url: "/stations/search", method: :post do |form| %>
+<%= form_with url: "/search", method: :post do |form| %>
     <div>
         <%= form.label :title, "乗車バス停名:" %>
         <%= form.text_field :get_on %>
