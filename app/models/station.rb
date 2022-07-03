@@ -59,19 +59,11 @@ class Station < ApplicationRecord
             up = { up: up?(get_on) }
             result = Jikan.call_calculate_wait_time(get_on_station_id, up)
         else
-            result = non_wait_time_value(get_on_station_id)
+            result = Jikan.non_wait_time(get_on_station_id)
         end
     end
 
     private
-
-    def non_wait_time_value
-        {
-            close_to_time_get_on:   Jikan.close_to_time_get_on(station_id),
-            is_wait_time:               false,
-            wait_time:                  nil
-        }
-    end
 
     def norikae_necessary?(get_on, get_off)
         arg1 = OJI_ROUTE.include?(get_on) ? true : false
