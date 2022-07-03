@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_03_035512) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_03_105126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_03_035512) do
     t.datetime "updated_at", null: false
     t.integer "get_on_time_hour"
     t.integer "get_on_time_minute"
+    t.integer "row", null: false
     t.index ["station_id"], name: "index_jikans_on_station_id"
   end
 
