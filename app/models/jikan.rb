@@ -1,5 +1,5 @@
 class Jikan < ApplicationRecord
-    belings_to :station
+    belongs_to :station
 
     def self.call_calculate_wait_time(id, is_up)
         records = tuple_record_before_relay_point_relay_point(get_on_station_id, is_up)
@@ -8,7 +8,7 @@ class Jikan < ApplicationRecord
         wait_time               = (before_relay_point_time - relay_point_time).abs
 
         {
-            close_to_time_get_on:   getting_on_record_now_time(id)
+            close_to_time_get_on:   getting_on_record_now_time(id),
             is_wait_time:           true,
             wait_time:              wait_time
         }
@@ -16,7 +16,7 @@ class Jikan < ApplicationRecord
 
     def self.non_wait_time(id)
         {
-            close_to_time_get_on:   getting_on_record_now_time(id)
+            close_to_time_get_on:   getting_on_record_now_time(id),
             is_wait_time:           false,
             wait_time:              0
         }
@@ -81,7 +81,7 @@ class Jikan < ApplicationRecord
     def fix_last_records(records)
         Time.new(
             Time.now.year,
-            records.last[:get_on_time_minute] <= 60 ? records.last[:get_on_time_hour] : records.last[:get_on_time_hour] + 1
+            records.last[:get_on_time_minute] <= 60 ? records.last[:get_on_time_hour] : records.last[:get_on_time_hour] + 1,
             records.last[:get_on_time_minute] <= 60 ? records.last[:get_on_time_minute] : records.last[:get_on_time_minute] - 60
         )
     end
@@ -93,7 +93,7 @@ class Jikan < ApplicationRecord
     def fix_time(record)
         Time.new(
             Time.now.year,
-            record[:get_on_time_minute] <= 60 ? record[:get_on_time_hour] : record[:get_on_time_hour] + 1
+            record[:get_on_time_minute] <= 60 ? record[:get_on_time_hour] : record[:get_on_time_hour] + 1,
             record[:get_on_time_minute] <= 60 ? record[:get_on_time_minute] : record[:get_on_time_minute] - 60
         )
     end
