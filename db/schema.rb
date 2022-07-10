@@ -10,27 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_10_151443) do
+ActiveRecord::Schema[7.0].define(version: 20_220_710_151_443) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "bus_stops", force: :cascade do |t|
-    t.string "name", null: false
-    t.boolean "is_relay_point"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "type"
+  create_table 'bus_stops', force: :cascade do |t|
+    t.string 'name', null: false
+    t.boolean 'is_relay_point'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.string 'type'
   end
 
-  create_table "jikans", force: :cascade do |t|
-    t.bigint "station_id"
-    t.integer "order", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "get_on_time_hour"
-    t.integer "get_on_time_minute"
-    t.integer "row", null: false
-    t.index ["station_id"], name: "index_jikans_on_station_id"
+  create_table 'jikans', force: :cascade do |t|
+    t.bigint 'station_id'
+    t.integer 'order', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.integer 'get_on_time_hour'
+    t.integer 'get_on_time_minute'
+    t.integer 'row', null: false
+    t.index ['station_id'], name: 'index_jikans_on_station_id'
   end
-
 end

@@ -66,15 +66,15 @@ MAIJI_LIST_TABATA = [
   [15, 35, 55],
   [16, 36, 55], # ここまで正しい
   [16, 36, 55], # 以降は適当なデータ。とりあえず数だけ合わせている。
-  [16, 36, 55], 
-  [16, 36, 55], 
-  [16, 36, 55], 
-  [16, 36, 55], 
-  [16, 36, 55], 
-  [16, 36, 55], 
-  [16, 36, 55], 
-  [16, 36, 55], 
-  [16, 36, 55], 
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
   [16, 36, 55]
 ]
 
@@ -90,9 +90,9 @@ def zipping_list(staions, maiji_lists)
   zipped = staions.zip(maiji_lists)
 
   zipped.each_with_object([]) do |value, arg|
-    station_set  = value[0]
+    station_set = value[0]
     jikan_set = value[1]
-    
+
     jikan_set.map do |v|
       arg << station_set + [v]
     end
@@ -100,21 +100,21 @@ def zipping_list(staions, maiji_lists)
 end
 
 def create_bus_stop(routes)
-  type = routes == OJI_ROUTE ? "Oji" : "Tabata"
+  type = routes == OJI_ROUTE ? 'Oji' : 'Tabata'
   klass = Module.const_get(type)
   routes.map do |route|
     klass.create(
-      name:           route[0],
+      name: route[0],
       is_relay_point: route[1]
     )
   end
 end
 
 def find_bus_stop_id(name)
-  BusStop.find_by(name: name).id
+  BusStop.find_by(name:).id
 end
 
-def create_jikokuhyo(zipped_lists, route)
+def create_jikokuhyo(zipped_lists, _route)
   zipped_lists.each_with_index do |list, index|
     # [['霜降橋', false, 55], ..., ..., ]の形で受け取る
     name            = list[0]
@@ -123,11 +123,11 @@ def create_jikokuhyo(zipped_lists, route)
 
     repeat_counts.times do |count|
       Jikan.create(
-        station_id:         find_bus_stop_id(name),
-        order:              index,
-        get_on_time_hour:   count + 6, # 6を足すことで時間を指定する
+        station_id: find_bus_stop_id(name),
+        order: index,
+        get_on_time_hour: count + 6, # 6を足すことで時間を指定する
         get_on_time_minute: minute,
-        row:                count
+        row: count
       )
     end
   end
