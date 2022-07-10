@@ -1,2 +1,2 @@
-class Tabata < Station
+class Tabata < BusStop
 end

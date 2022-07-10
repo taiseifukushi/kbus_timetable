@@ -111,7 +111,7 @@ def create_bus_stop(routes)
 end
 
 def find_bus_stop_id(name)
-  Station.find_by(name: name).id
+  BusStop.find_by(name: name).id
 end
 
 def create_jikokuhyo(zipped_lists, route)
