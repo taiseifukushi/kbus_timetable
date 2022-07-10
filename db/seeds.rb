@@ -41,7 +41,7 @@ TABATA_ROUTE = [
 MAIJI_LIST_OJI = [
   [15, 35, 55],
   [16, 36, 55], # ここまで正しい
-  [16, 36, 55],
+  [16, 36, 55], # 以降は適当なデータ。とりあえず数だけ合わせている。
   [16, 36, 55],
   [16, 36, 55],
   [16, 36, 55],
@@ -63,9 +63,9 @@ MAIJI_LIST_OJI = [
 ]
 
 MAIJI_LIST_TABATA = [
-  [15, 35, 55], # JR駒込駅
-  [16, 36, 55], # 王子本町交番 ...
-  [16, 36, 55], 
+  [15, 35, 55],
+  [16, 36, 55], # ここまで正しい
+  [16, 36, 55], # 以降は適当なデータ。とりあえず数だけ合わせている。
   [16, 36, 55], 
   [16, 36, 55], 
   [16, 36, 55], 
@@ -99,20 +99,31 @@ def zipping_list(staions, maiji_lists)
   end
 end
 
-def create_jikokuhyo(zipped_lists)
+def create_bus_stop(routes)
+  type = routes == OJI_ROUTE ? "Oji" : "Tabata"
+  klass = Module.const_get(type)
+  routes.map do |route|
+    klass.create(
+      name:           route[0],
+      is_relay_point: route[1]
+    )
+  end
+end
+
+def find_bus_stop_id(name)
+  Station.find_by(name: name).id
+end
+
+def create_jikokuhyo(zipped_lists, route)
   zipped_lists.each_with_index do |list, index|
     # [['霜降橋', false, 55], ..., ..., ]の形で受け取る
     name            = list[0]
     is_relay_point  = list[1]
     minute          = list[2]
 
-    station = Station.create(
-      name:           name,
-      is_relay_point: is_relay_point
-    )
     repeat_counts.times do |count|
       Jikan.create(
-        station_id: station[:id],
+        station_id:         find_bus_stop_id(name),
         order:              index,
         get_on_time_hour:   count + 6, # 6を足すことで時間を指定する
         get_on_time_minute: minute,
@@ -122,9 +133,11 @@ def create_jikokuhyo(zipped_lists)
   end
 end
 
-# ===
-oji = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
-tabata = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
+# ==========
+oji_zipping_list     = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
+tabata_zipping_list  = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
 
-create_jikokuhyo(oji)
-create_jikokuhyo(tabata)
+create_bus_stop(OJI_ROUTE)
+create_bus_stop(TABATA_ROUTE)
+create_jikokuhyo(oji_zipping_list, OJI_ROUTE)
+create_jikokuhyo(tabata_zipping_list, TABATA_ROUTE)
