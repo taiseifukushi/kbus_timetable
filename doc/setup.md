@@ -127,3 +127,6 @@ docker-compose up
 
 ### railsコマンド
 `docker-compose run web`をつけて実行
+
+### データの作成
+`docker-compose run web rails db:seed`

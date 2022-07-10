@@ -40,45 +40,104 @@ TABATA_ROUTE = [
 
 MAIJI_LIST_OJI = [
   [15, 35, 55],
+  [16, 36, 55], # ここまで正しい
+  [16, 36, 55], # 以降は適当なデータ。とりあえず数だけ合わせている。
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
   [16, 36, 55]
 ]
 
 MAIJI_LIST_TABATA = [
   [15, 35, 55],
+  [16, 36, 55], # ここまで正しい
+  [16, 36, 55], # 以降は適当なデータ。とりあえず数だけ合わせている。
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
   [16, 36, 55]
 ]
 
 SIHATU_HOUR = 7
 SAISHUU_HOUR = 19
 
-def create_jkokuhyo(staions, maiji_list)
-  maiji_list.each_with_index do |maiji, _index|
-    # [15, 35, 55]
-    maiji.each_with_index do |min, idx|
-      # min 15
-      repeat_counts.times do |count|
-        staions.each_with_index do |station, _i|
-          oji_station = Oji.create(
-            name: station[0],
-            is_relay_point: station[1]
-          )
-          at_time = count + 6
-          Jikan.create(
-            station_id: oji_station[:id],
-            order: idx,
-            get_on_time_hour: at_time,
-            get_on_time_minute: min,
-            row: count
-          )
-        end
-      end
-    end
-  end
-end
-
 def repeat_counts
   SAISHUU_HOUR - SIHATU_HOUR + 1
 end
 
-create_jkokuhyo(OJI_ROUTE, MAIJI_LIST_OJI)
-create_jkokuhyo(TABATA_ROUTE, MAIJI_LIST_TABATA)
+def zipping_list(staions, maiji_lists)
+  # [['霜降橋', false, 55], ..., ..., ]こういう配列を返したい
+  zipped = staions.zip(maiji_lists)
+
+  zipped.each_with_object([]) do |value, arg|
+    station_set = value[0]
+    jikan_set = value[1]
+
+    jikan_set.map do |v|
+      arg << station_set + [v]
+    end
+  end
+end
+
+def create_bus_stop(routes)
+  type = routes == OJI_ROUTE ? 'Oji' : 'Tabata'
+  klass = Module.const_get(type)
+  routes.map do |route|
+    klass.create(
+      name: route[0],
+      is_relay_point: route[1]
+    )
+  end
+end
+
+def find_bus_stop_id(name)
+  BusStop.find_by(name:).id
+end
+
+def create_jikokuhyo(zipped_lists, _route)
+  zipped_lists.each_with_index do |list, index|
+    # [['霜降橋', false, 55], ..., ..., ]の形で受け取る
+    name            = list[0]
+    is_relay_point  = list[1]
+    minute          = list[2]
+
+    repeat_counts.times do |count|
+      Jikan.create(
+        station_id: find_bus_stop_id(name),
+        order: index,
+        get_on_time_hour: count + 6, # 6を足すことで時間を指定する
+        get_on_time_minute: minute,
+        row: count
+      )
+    end
+  end
+end
+
+# ==========
+oji_zipping_list     = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
+tabata_zipping_list  = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
+
+create_bus_stop(OJI_ROUTE)
+create_bus_stop(TABATA_ROUTE)
+create_jikokuhyo(oji_zipping_list, OJI_ROUTE)
+create_jikokuhyo(tabata_zipping_list, TABATA_ROUTE)

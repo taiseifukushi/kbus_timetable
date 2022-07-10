@@ -30,17 +30,20 @@ https://mermaid-js.github.io/mermaid/#/entityRelationshipDiagram
 
 ```mermaid
 erDiagram
-    STATION ||--|{ JIKAN: station-time
-    STATION {
+    BUS_STOP ||--|{ JIKAN: ""
+
+    BUS_STOP {
         int id PK
         string name
         boolean is_relay_point
+        string type
     }
     JIKAN {
         int id PK
         int station_id FK
-        time get_on_time
+        int get_on_time_hour
+        int get_on_time_minute
         int order
+        int row
     }
 ```
-

@@ -1,4 +1,4 @@
-class Station < ApplicationRecord
+class BusStop < ApplicationRecord
   has_many :jikan
 
   OJI_ROUTE = %w[
@@ -54,7 +54,7 @@ class Station < ApplicationRecord
   }.freeze
 
   def self.calculate_wait_time(params)
-    get_on_station_id = Station.find_by(name: params[:get_on])&.id
+    get_on_station_id = BusStop.find_by(name: params[:get_on])&.id
     if norikae_necessary?(params[:get_on], params[:get_off])
       up = { up: up?(get_on) }
       result = Jikan.call_calculate_wait_time(get_on_station_id, up)
