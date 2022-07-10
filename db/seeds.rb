@@ -40,45 +40,93 @@ TABATA_ROUTE = [
 
 MAIJI_LIST_OJI = [
   [15, 35, 55],
+  [16, 36, 55], # ここまで正しい
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
+  [16, 36, 55],
   [16, 36, 55]
 ]
 
 MAIJI_LIST_TABATA = [
-  [15, 35, 55],
+  [15, 35, 55], # JR駒込駅
+  [16, 36, 55], # 王子本町交番 ...
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
+  [16, 36, 55], 
   [16, 36, 55]
 ]
 
 SIHATU_HOUR = 7
 SAISHUU_HOUR = 19
 
-def create_jkokuhyo(staions, maiji_list)
-  maiji_list.each_with_index do |maiji, _index|
-    # [15, 35, 55]
-    maiji.each_with_index do |min, idx|
-      # min 15
-      repeat_counts.times do |count|
-        staions.each_with_index do |station, _i|
-          oji_station = Oji.create(
-            name: station[0],
-            is_relay_point: station[1]
-          )
-          at_time = count + 6
-          Jikan.create(
-            station_id: oji_station[:id],
-            order: idx,
-            get_on_time_hour: at_time,
-            get_on_time_minute: min,
-            row: count
-          )
-        end
-      end
-    end
-  end
-end
-
 def repeat_counts
   SAISHUU_HOUR - SIHATU_HOUR + 1
 end
 
-create_jkokuhyo(OJI_ROUTE, MAIJI_LIST_OJI)
-create_jkokuhyo(TABATA_ROUTE, MAIJI_LIST_TABATA)
+def zipping_list(staions, maiji_lists)
+  # [['霜降橋', false, 55]こういう配列を返したい
+  zipped = staions.zip(maiji_lists)
+  # [[['霜降橋', false], [15, 35, 55]], [["hoge", true], [1, 5, 5]]]
+
+  zipped.each_with_object([]) do |value, arg|
+    station_set  = value[0]
+    jikan_set = value[1]
+    
+    jikan_set.each do |v|
+      station_set  = value[0]
+      arg << station_set.push(v)
+    end
+  end
+end
+
+def create_jikokuhyo(zipped_lists)
+  zipped_lists.each_with_index do |list, index|
+    # [['霜降橋', false, 55], ..., ..., ]の形で受け取る
+    name            = list[0]
+    is_relay_point  = list[1]
+    minute          = list[2]
+
+    station = Station.create(
+      name:           name,
+      is_relay_point: is_relay_point
+    )
+    repeat_counts.times do |count|
+      Jikan.create(
+        station_id: station[:id],
+        order:              index,
+        get_on_time_hour:   count + 6, # 6を足すことで時間を指定する
+        get_on_time_minute: minute,
+        row:                count
+      )
+    end
+  end
+end
+
+# ===
+oji = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
+tabata = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
+
+create_jikokuhyo(oji)
+create_jikokuhyo(tabata)
