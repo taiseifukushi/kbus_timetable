@@ -90,11 +90,11 @@ def zipping_list(staions, maiji_lists)
   zipped = staions.zip(maiji_lists)
 
   zipped.each_with_object([]) do |value, arg|
-    station_set = value[0]
+    bus_stop_set = value[0]
     jikan_set = value[1]
 
     jikan_set.map do |v|
-      arg << station_set + [v]
+      arg << bus_stop_set + [v]
     end
   end
 end
@@ -123,7 +123,7 @@ def create_jikokuhyo(zipped_lists, _route)
 
     repeat_counts.times do |count|
       Jikan.create(
-        station_id: find_bus_stop_id(name),
+        bus_stop_id: find_bus_stop_id(name),
         order: index,
         get_on_time_hour: count + 6, # 6を足すことで時間を指定する
         get_on_time_minute: minute,

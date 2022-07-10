@@ -2,7 +2,7 @@ class Jikan < ApplicationRecord
   belongs_to :bus_stop
 
   def self.call_calculate_wait_time(id, is_up)
-    records = tuple_record_before_relay_point_relay_point(get_on_station_id, is_up)
+    records = tuple_record_before_relay_point_relay_point(get_on_bus_stop_id, is_up)
     before_relay_point_time = fix_time(records[0])
     relay_point_time        = fix_time(records[1])
     wait_time               = (before_relay_point_time - relay_point_time).abs
@@ -24,14 +24,14 @@ class Jikan < ApplicationRecord
 
   private
 
-  def tuple_record_before_relay_point_relay_point(get_on_station_id, is_up)
+  def tuple_record_before_relay_point_relay_point(get_on_bus_stop_id, is_up)
     relay_point = if is_up[:up]
                     RELAY_POINT[:up]
                   else
                     RELAY_POINT[:down]
                   end
 
-    close_to_record    = getting_on_record_now_time(get_on_station_id)
+    close_to_record    = getting_on_record_now_time(get_on_bus_stop_id)
     row                = close_to_record[:row]
     before_relay_point = relay_point[0]
     relay_point        = relay_point[1]
@@ -43,8 +43,8 @@ class Jikan < ApplicationRecord
     [before_relay_point_record, relay_point_record]
   end
 
-  def getting_on_record_select_time(station_id, time)
-    records = Jikan.where(station_id:) # 駅のレコードが出てくる
+  def getting_on_record_select_time(bus_stop_id, time)
+    records = Jikan.where(bus_stop_id:) # 駅のレコードが出てくる
                    .where(get_on_time_hour: time.hour) # 時間で絞る
     last_record = fix_last_record(records)
 
@@ -54,15 +54,15 @@ class Jikan < ApplicationRecord
                           (fix_minute - time.minute).abs
                         end
                       else
-                        Jikan.where(station_id:)
+                        Jikan.where(bus_stop_id:)
                              .where(get_on_time_hour: time.hour + 1)
                              .first
                       end
   end
 
-  def getting_on_record_now_time(station_id)
+  def getting_on_record_now_time(bus_stop_id)
     time = current_time
-    records = Jikan.where(station_id:) # 駅のレコードが出てくる
+    records = Jikan.where(bus_stop_id:) # 駅のレコードが出てくる
                    .where(get_on_time_hour: time.hour) # 時間で絞る
     last_record = fix_last_record(records)
 
@@ -72,7 +72,7 @@ class Jikan < ApplicationRecord
                           (fix_minute - time.minute).abs
                         end
                       else
-                        Jikan.where(station_id:)
+                        Jikan.where(bus_stop_id:)
                              .where(get_on_time_hour: time.hour + 1)
                              .first
                       end

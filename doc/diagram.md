@@ -40,7 +40,7 @@ erDiagram
     }
     JIKAN {
         int id PK
-        int station_id FK
+        int bus_stop_id FK
         int get_on_time_hour
         int get_on_time_minute
         int order
