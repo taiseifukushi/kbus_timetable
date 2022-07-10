@@ -7,3 +7,5 @@
     - https://qiita.com/kagesumi3m/items/c19e1cc3430b88d8bbec
     - https://techracho.bpsinc.jp/hachi8833/2021_06_09/108495
     - https://zenn.dev/en30/articles/2e8e0c55c128e0
+    - https://twitter.com/gatsuonRails/status/1542983275106291712
+    - https://techblog.gmo-ap.jp/2022/07/05/rails-7-hotwire/
