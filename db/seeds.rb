@@ -86,17 +86,15 @@ def repeat_counts
 end
 
 def zipping_list(staions, maiji_lists)
-  # [['霜降橋', false, 55]こういう配列を返したい
+  # [['霜降橋', false, 55], ..., ..., ]こういう配列を返したい
   zipped = staions.zip(maiji_lists)
-  # [[['霜降橋', false], [15, 35, 55]], [["hoge", true], [1, 5, 5]]]
 
   zipped.each_with_object([]) do |value, arg|
     station_set  = value[0]
     jikan_set = value[1]
     
-    jikan_set.each do |v|
-      station_set  = value[0]
-      arg << station_set.push(v)
+    jikan_set.map do |v|
+      arg << station_set + [v]
     end
   end
 end
