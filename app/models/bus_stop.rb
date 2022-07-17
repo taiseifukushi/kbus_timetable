@@ -54,9 +54,11 @@ class BusStop < ApplicationRecord
   }.freeze
 
   def self.calculate_wait_time(params)
-    get_on_bus_stop_id = BusStop.find_by(name: params[:get_on])&.id
-    if norikae_necessary?(params[:get_on], params[:get_off])
-      up = { up: up?(get_on) }
+    get_on_time        = params[:get_on]
+    get_off_time       = params[:get_off]
+    get_on_bus_stop_id = BusStop.find_by(name: get_on_time)&.id
+    if norikae_necessary?(get_on_time, get_off_time)
+      up     = { up: up?(get_on) }
       result = Jikan.call_calculate_wait_time(get_on_bus_stop_id, up)
     else
       result = Jikan.non_wait_time(get_on_bus_stop_id)
