@@ -1,0 +1,14 @@
+nav {
+  border-bottom: 1px solid black;
+}
+
+.menus {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.menu {
+  display: inline-block;
+  font-weight: bold;
+  padding: 0 3px;
+}

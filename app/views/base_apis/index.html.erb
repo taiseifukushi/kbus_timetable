@@ -1,15 +1,15 @@
-<h1>【乗換待ち時間計算】北区コミュニティバス - Kバス</h1>
+<h1>乗換待ち時間計算 北区コミュニティバス - Kバス</h1>
 <h2>乗降するバス停を選択してください</h2>
 <%# バリデーションを追加する %>
 
 <%# https://railsdoc.com/page/form_with %>
 <%= form_with url: "/search", method: :post do |form| %>
     <div>
-        <%= form.label :title, "【乗車】バス停名:" %>
+        <%= form.label :title, "乗車:" %>
         <%= form.text_field :get_on %>
     </div>
     <div>
-        <%= form.label :title, "【降車】バス停名:" %>
+        <%= form.label :title, "降車:" %>
         <%= form.text_field :get_off %>
     </div>
     <%= form.submit "検索" %>

@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RailsApp</title>
+    <title>北区コミュニティバス - 乗換待ち時間計算</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%# https://simplecss.org/simple-css-version-2 %>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple-v1.css">
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <%= render "shared/header" %>
     <%= yield %>
+    <%= render "shared/footer" %>
   </body>
 </html>
