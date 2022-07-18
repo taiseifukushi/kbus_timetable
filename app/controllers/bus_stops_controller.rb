@@ -16,14 +16,14 @@ class BusStopsController < ApplicationController
       # @caluculated = result_struct(current_time, mock_result_hash)
 
       @caluculated = test_result_struct
-      flash.now[:success] = '更新しました'
+      # flash.now[:notice] = '更新しました'
       render turbo_stream: [
         turbo_stream.replace('caluculated', partial: 'caluculated'),
         turbo_stream.update('flash', partial: 'shared/flash')
       ]
     else
       p 'false'
-      @results = false
+      flash.now[:alert] = 'バス停を選択してください'
       # flash[:notice] = '更新しました'
     end
   end

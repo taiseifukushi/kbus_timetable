@@ -1,0 +1,12 @@
+.flash-messages {
+  color: black;
+  text-align: center;
+}
+
+.notice {
+  background-color: lightBlue;
+}
+
+.alert {
+  background-color: red;
+}
