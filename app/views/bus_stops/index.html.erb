@@ -2,21 +2,19 @@
 <h2>乗降するバス停を選択してください</h2>
 <%# バリデーションを追加する %>
 
-<%# https://railsdoc.com/page/form_with %>
-<%= form_with url: "/search", method: :post do |form| %>
+<%= form_with(model: @bus_stop, url: "/search", method: :get) do |f| %>
     <div>
-        <%= form.label :title, "乗車:" %>
-        <%= form.text_field :get_on %>
+        <%= f.label :title, "乗車:" %>
+        <%= f.select :get_off, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
     </div>
     <div>
-        <%= form.label :title, "降車:" %>
-        <%= form.text_field :get_off %>
+        <%= f.label :title, "降車:" %>
+        <%= f.select :get_off, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
     </div>
-    <%= form.submit "検索" %>
+    <%= f.submit "検索" %>
 <% end %>
 
 <h3>中継地点での待ち時間</h3>
-<h4>現在時刻</h3>
 <%= turbo_frame_tag "now" do %>
     <div>(現在時刻)</div>
     <%# <%= render @results %>

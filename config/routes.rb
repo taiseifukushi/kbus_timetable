@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  root 'base_apis#index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  post 'search', to: 'base_apis#search'
+  root 'bus_stops#index'
+  post 'search', to: 'bus_stops#search'
 end
