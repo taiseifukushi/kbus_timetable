@@ -16,11 +16,7 @@ class BusStopsController < ApplicationController
       @caluculated = test_result_struct
       flash.now[:notice] = '更新しました'
       # binding.prys
-      render turbo_stream:
-        turbo_stream.replace(
-          "caluculated",
-          partial: "caluculated"
-        )
+      render turbo_stream: turbo_stream.replace('caluculated', partial: 'caluculated')
     else
       p 'false'
       @results = false
@@ -28,9 +24,7 @@ class BusStopsController < ApplicationController
     end
   end
 
-  def show
-    
-  end
+  def show; end
 
   def search_params
     params.require(:bus_stop).permit(:get_on, :get_off)
@@ -61,7 +55,7 @@ class BusStopsController < ApplicationController
 
   # mockの結果
   def mock_result_hash
-    { on: "Aバス", off: "Bバス", wait_time: 10 }
+    { on: 'Aバス', off: 'Bバス', wait_time: 10 }
   end
 
   def test_result_struct
