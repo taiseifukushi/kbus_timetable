@@ -1,7 +1,7 @@
 class Jikan < ApplicationRecord
   belongs_to :bus_stop
 
-  def self.call_calculate_wait_time(id, is_up)
+  def self.call_calculate_wait_time(id, _is_up)
     records = tuple_record_before_relay_point_relay_point(get_on_bus_stop_id, is_up_hash)
     before_relay_point_time = fix_time(records[0])
     relay_point_time        = fix_time(records[1])
@@ -43,7 +43,25 @@ class Jikan < ApplicationRecord
     [before_relay_point_record, relay_point_record]
   end
 
-  def getting_on_record_select_time(bus_stop_id, time)
+  def getting_on_record_select_time(id, time)
+    records = Jikan.where(bus_stop_id: id) # 駅のレコードが出てくる
+                   .where(get_on_time_hour: time.hour) # 時間で絞る
+    last_record = fix_last_record(records)
+
+    close_to_record = if time < last_record
+                        records.min_by do |record|
+                          fix_minute = fix_record_minute(record)
+                          (fix_minute - time.minute).abs
+                        end
+                      else
+                        Jikan.where(bus_stop_id: id)
+                             .where(get_on_time_hour: time.hour + 1)
+                             .first
+                      end
+  end
+
+  def getting_on_record_now_time(bus_stop_id)
+    time = current_time
     records = Jikan.where(bus_stop_id:) # 駅のレコードが出てくる
                    .where(get_on_time_hour: time.hour) # 時間で絞る
     last_record = fix_last_record(records)
@@ -55,24 +73,6 @@ class Jikan < ApplicationRecord
                         end
                       else
                         Jikan.where(bus_stop_id:)
-                             .where(get_on_time_hour: time.hour + 1)
-                             .first
-                      end
-  end
-
-  def getting_on_record_now_time(bus_stop_id)
-    time = current_time
-    records = Jikan.where(bus_stop_id: bus_stop_id) # 駅のレコードが出てくる
-                   .where(get_on_time_hour: time.hour) # 時間で絞る
-    last_record = fix_last_record(records)
-
-    close_to_record = if time < last_record
-                        records.min_by do |record|
-                          fix_minute = fix_record_minute(record)
-                          (fix_minute - time.minute).abs
-                        end
-                      else
-                        Jikan.where(bus_stop_id: bus_stop_id)
                              .where(get_on_time_hour: time.hour + 1)
                              .first
                       end

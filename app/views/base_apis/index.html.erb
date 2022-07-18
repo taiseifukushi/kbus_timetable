@@ -1,24 +1,27 @@
-<h1>BaseApis#index</h1>
-<p>Find me in app/views/base_apis/index.html.erb</p>
-
+<h1>【乗換待ち時間計算】北区コミュニティバス - Kバス</h1>
+<h2>乗降するバス停を選択してください</h2>
 <%# バリデーションを追加する %>
 
 <%# https://railsdoc.com/page/form_with %>
 <%= form_with url: "/search", method: :post do |form| %>
     <div>
-        <%= form.label :title, "乗車バス停名:" %>
+        <%= form.label :title, "【乗車】バス停名:" %>
         <%= form.text_field :get_on %>
     </div>
     <div>
-        <%= form.label :title, "降車バス停名:" %>
+        <%= form.label :title, "【降車】バス停名:" %>
         <%= form.text_field :get_off %>
     </div>
     <%= form.submit "検索" %>
 <% end %>
 
-<div>結果を3件表示する</div>
-
+<h3>中継地点での待ち時間</h3>
+<h4>現在時刻</h3>
+<%= turbo_frame_tag "now" do %>
+    <div>(現在時刻)</div>
+    <%# <%= render @results %>
+<% end %>
 <%= turbo_frame_tag "results" do %>
-    <div>置換したい箇所</div>
-    <%# <%= render @results %> %>
+    <div>(置換したい箇所)</div>
+    <%# <%= render @results %>
 <% end %>
