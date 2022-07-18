@@ -53,28 +53,28 @@ class BusStop < ApplicationRecord
     ]
   }.freeze
 
-  def self.calculate_wait_time(params)
-    get_on_time        = params[:get_on]
-    get_off_time       = params[:get_off]
-    get_on_bus_stop_id = BusStop.find_by(name: get_on_time)&.id
-    if norikae_necessary?(get_on_time, get_off_time)
-      up     = { up: up?(get_on) }
-      result = Jikan.call_calculate_wait_time(get_on_bus_stop_id, up)
+  def self.calculate_wait_time(on, off)
+    get_on             = on
+    get_off            = off
+    get_on_bus_stop_id = BusStop.find_by(name: get_on)&.id
+    # binding.pry
+    if norikae?(get_on, get_off)
+      binding.pry
+      up = { up: up?(get_on) }
+      Jikan.call_calculate_wait_time(get_on_bus_stop_id, up)
     else
-      result = Jikan.non_wait_time(get_on_bus_stop_id)
+      Jikan.non_wait_time(get_on_bus_stop_id)
     end
   end
 
   private
 
-  def norikae_necessary?(get_on, get_off)
-    arg1 = OJI_ROUTE.include?(get_on) ? true : false
-    arg2 = OJI_ROUTE.include?(get_off) ? true : false
-    arg1 && arg2 ? false : true
+  def norikae?(get_on, get_off)
+    binding.pry
+    OJI_ROUTE.include?(get_on) && OJI_ROUTE.include?(get_off) ? false : true
   end
 
   def up?(get_on)
-    arg1 = OJI_ROUTE.include?(get_on) ? true : false
-    is_up = arg1 ? true : false
+    OJI_ROUTE.include?(get_on) ? true : false
   end
 end

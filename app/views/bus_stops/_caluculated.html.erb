@@ -1,0 +1,14 @@
+<%= turbo_frame_tag "caluculated" do %>
+  <%= render partial: 'now', locals: { now: @caluculated.now } %>
+  <% binding.pry %>
+  <% if @caluculated.wait_time %>
+    <h3>中継地点での待ち時間</h3>
+    <h4>計算結果</h4>
+    <ul>
+    <li><% @caluculated.on %></li>
+    <li><% @caluculated.off %></li>
+    <li><% @caluculated.wait_time %></li>
+    </ul>
+  <% else %>
+  <% end %>
+<% end %>

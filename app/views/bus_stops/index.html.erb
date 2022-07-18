@@ -5,7 +5,7 @@
 <%= form_with(model: @bus_stop, url: "/search", method: :get) do |f| %>
     <div>
         <%= f.label :title, "乗車:" %>
-        <%= f.select :get_off, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
+        <%= f.select :get_on, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
     </div>
     <div>
         <%= f.label :title, "降車:" %>
@@ -14,12 +14,4 @@
     <%= f.submit "検索" %>
 <% end %>
 
-<h3>中継地点での待ち時間</h3>
-<%= turbo_frame_tag "now" do %>
-    <div>(現在時刻)</div>
-    <%# <%= render @results %>
-<% end %>
-<%= turbo_frame_tag "results" do %>
-    <div>(置換したい箇所)</div>
-    <%# <%= render @results %>
-<% end %>
+<%= render 'caluculated' %>
