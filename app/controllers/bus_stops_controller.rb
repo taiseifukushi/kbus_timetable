@@ -1,4 +1,6 @@
 class BusStopsController < ApplicationController
+  include Common
+
   before_action :test_result_struct_index, only: %i[index]
   before_action :get_bus_stop_obj, only: %i[index]
 
@@ -14,22 +16,16 @@ class BusStopsController < ApplicationController
       # @caluculated = result_struct(current_time, mock_result_hash)
 
       @caluculated = test_result_struct
-      flash.now[:notice] = '更新しました'
-      # binding.prys
-      render turbo_stream:
-        turbo_stream.replace(
-          "caluculated",
-          partial: "caluculated"
-        )
+      # flash.now[:notice] = '更新しました'
+      render turbo_stream: [
+        turbo_stream.replace('caluculated', partial: 'caluculated'),
+        turbo_stream.update('flash', partial: 'shared/flash')
+      ]
     else
       p 'false'
-      @results = false
-      flash[:notice] = '更新しました'
+      flash.now[:alert] = 'バス停を選択してください'
+      # flash[:notice] = '更新しました'
     end
-  end
-
-  def show
-    
   end
 
   def search_params
@@ -38,33 +34,5 @@ class BusStopsController < ApplicationController
 
   def get_bus_stop_obj
     @bus_stop = BusStop.all
-  end
-
-  def current_time
-    Time.zone.now
-  end
-
-  def result_struct(now, hash)
-    caluculator = Struct.new(:now, :on, :off, :wait_time)
-    caluculator.new(now, hash[:on], hash[:off], hash[:wait_time])
-  end
-
-  # mockの結果
-  def mock_result_hash_index
-    { on: nil, off: nil, wait_time: nil }
-  end
-
-  # mockの結果
-  def test_result_struct_index
-    @caluculated = result_struct(nil, mock_result_hash_index)
-  end
-
-  # mockの結果
-  def mock_result_hash
-    { on: "Aバス", off: "Bバス", wait_time: 10 }
-  end
-
-  def test_result_struct
-    @caluculated = result_struct(current_time, mock_result_hash)
   end
 end
