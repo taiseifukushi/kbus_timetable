@@ -137,7 +137,9 @@ end
 oji_zipping_list     = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
 tabata_zipping_list  = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
 
+p 'rails db:seedを実行します'
 create_bus_stop(OJI_ROUTE)
 create_bus_stop(TABATA_ROUTE)
 create_jikokuhyo(oji_zipping_list, OJI_ROUTE)
 create_jikokuhyo(tabata_zipping_list, TABATA_ROUTE)
+p 'rails db:seedを実行しました'

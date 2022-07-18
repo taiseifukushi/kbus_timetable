@@ -75,7 +75,7 @@ group :test do
   gem 'webdrivers'
 end
 
-# https://github.com/activerecord-hackery/ransack
-gem 'ransack'
-
+gem 'erb_lint' # https://github.com/Shopify/erb-lint
+gem 'ransack' # https://github.com/activerecord-hackery/ransack
 gem 'rubocop'
+# gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
