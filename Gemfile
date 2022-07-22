@@ -79,3 +79,5 @@ gem 'erb_lint' # https://github.com/Shopify/erb-lint
 gem 'ransack' # https://github.com/activerecord-hackery/ransack
 gem 'rubocop'
 # gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
+gem "sentry-ruby"
+gem 'dotenv-rails', groups: [:development, :test] # https://github.com/bkeepers/dotenv
