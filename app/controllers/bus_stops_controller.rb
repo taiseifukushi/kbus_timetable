@@ -1,5 +1,5 @@
 class BusStopsController < ApplicationController
-  include Common
+  include Caluculater::Base
 
   before_action :test_result_struct_index, only: %i[index]
   before_action :get_bus_stop_obj, only: %i[index]
