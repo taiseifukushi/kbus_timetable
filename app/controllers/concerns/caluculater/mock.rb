@@ -13,7 +13,7 @@ module Caluculater
 
     # mockの結果
     def mock_result_hash
-      { on: 'Aバス', off: 'Bバス', wait_time: 10 }
+      { on: "Aバス", off: "Bバス", wait_time: 10 }
     end
 
     def test_result_struct

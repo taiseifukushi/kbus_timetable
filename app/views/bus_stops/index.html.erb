@@ -1,6 +1,4 @@
-<h1>乗換待ち時間計算 北区コミュニティバス - Kバス</h1>
 <h2>乗降するバス停を選択してください</h2>
-<%# バリデーションを追加する %>
 
 <%= form_with(model: @bus_stop, url: "/search", method: :get) do |f| %>
     <div>
@@ -14,4 +12,4 @@
     <%= f.submit "検索" %>
 <% end %>
 
-<%= render 'caluculated' %>
+<%= render "caluculated" %>

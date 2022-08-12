@@ -1,41 +1,41 @@
 OJI_ROUTE = [
-  ['JR王子駅1', false],
-  ['王子本町交番', false],
-  ['障害者福祉センター', false],
-  ['中央図書館', false],
-  ['王子アパート', false],
-  ['紅葉橋', false],
-  ['北区役所', false],
-  ['飛鳥山公園1', false],
-  ['一里塚1', false],
-  ['花と森の東京病院1', false],
-  ['旧古河庭園1', false],
-  ['滝野川小学校1', false],
-  ['霜降橋1', false],
-  ['JR駒込駅', true],
-  ['霜降橋2', false],
-  ['滝野川小学校2', false],
-  ['旧古河庭園2', true],
-  ['花と森の東京病院2', false],
-  ['一里塚2', false],
-  ['飛鳥山公園2', false],
-  ['JR王子駅2', false]
+  ["JR王子駅1", false],
+  ["王子本町交番", false],
+  ["障害者福祉センター", false],
+  ["中央図書館", false],
+  ["王子アパート", false],
+  ["紅葉橋", false],
+  ["北区役所", false],
+  ["飛鳥山公園1", false],
+  ["一里塚1", false],
+  ["花と森の東京病院1", false],
+  ["旧古河庭園1", false],
+  ["滝野川小学校1", false],
+  ["霜降橋1", false],
+  ["JR駒込駅", true],
+  ["霜降橋2", false],
+  ["滝野川小学校2", false],
+  ["旧古河庭園2", true],
+  ["花と森の東京病院2", false],
+  ["一里塚2", false],
+  ["飛鳥山公園2", false],
+  ["JR王子駅2", false]
 ]
 
 TABATA_ROUTE = [
-  ['JR駒込駅', true],
-  ['駒込一丁目', false],
-  ['田端三丁目', false],
-  ['田端区民センター', false],
-  ['田端二丁目', false],
-  ['JR田端駅', false],
-  ['田端五丁目', false],
-  ['富士見橋エコー広場館', false],
-  ['中里保育園', false],
-  ['女子聖学院', false],
-  ['滝野川会館', true],
-  ['滝野川小学校', false],
-  ['霜降橋', false]
+  ["JR駒込駅", true],
+  ["駒込一丁目", false],
+  ["田端三丁目", false],
+  ["田端区民センター", false],
+  ["田端二丁目", false],
+  ["JR田端駅", false],
+  ["田端五丁目", false],
+  ["富士見橋エコー広場館", false],
+  ["中里保育園", false],
+  ["女子聖学院", false],
+  ["滝野川会館", true],
+  ["滝野川小学校", false],
+  ["霜降橋", false]
 ]
 
 MAIJI_LIST_OJI = [
@@ -100,7 +100,7 @@ def zipping_list(staions, maiji_lists)
 end
 
 def create_bus_stop(routes)
-  type = routes == OJI_ROUTE ? 'Oji' : 'Tabata'
+  type = routes == OJI_ROUTE ? "Oji" : "Tabata"
   klass = Module.const_get(type)
   routes.map do |route|
     klass.create(
@@ -137,9 +137,9 @@ end
 oji_zipping_list     = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
 tabata_zipping_list  = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
 
-p 'rails db:seedを実行します'
+p "rails db:seedを実行します"
 create_bus_stop(OJI_ROUTE)
 create_bus_stop(TABATA_ROUTE)
 create_jikokuhyo(oji_zipping_list, OJI_ROUTE)
 create_jikokuhyo(tabata_zipping_list, TABATA_ROUTE)
-p 'rails db:seedを実行しました'
+p "rails db:seedを実行しました"
