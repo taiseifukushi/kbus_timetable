@@ -5,6 +5,8 @@
 Sentry.init do |config|
   config.dsn = ENV['SENTRY_DSN']
   config.breadcrumbs_logger = %i[active_support_logger http_logger]
+  config.environment = 'production'
+  config.enabled_environments = %w[production]
 
   # Set traces_sample_rate to 1.0 to capture 100%
   # of transactions for performance monitoring.
@@ -14,5 +16,4 @@ Sentry.init do |config|
   config.traces_sampler = lambda do |_context|
     true
   end
-  config.environment = 'production'
 end
