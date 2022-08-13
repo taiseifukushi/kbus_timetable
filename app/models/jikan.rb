@@ -10,8 +10,7 @@ class Jikan < ApplicationRecord
       build_time_get_off = adjustment_time_sixty_minute_records(relay_point_record[1])
 
       wait_time = wait_time(build_time_get_on, build_time_get_off)
-      hash = build_result_hash(relay_point_record[0], relay_point_record[1], build_time_get_on, build_time_get_off,
-                               wait_time)
+      hash = build_result_hash(relay_point_record[0], relay_point_record[1], build_time_get_on, build_time_get_off, wait_time)
       set_caluculation_result_struct(formate_current_time, hash)
     end
 
@@ -48,6 +47,7 @@ class Jikan < ApplicationRecord
       record_close_to_time = the_adjustment_hour_records.min_by do |record|
         (record[:time] - current_time).abs
       end
+      binding.pry
       Jikan.find(record_close_to_time[:jikan_record_id])
     end
 
@@ -55,16 +55,14 @@ class Jikan < ApplicationRecord
     # 15時82分 => 16時22分
     def adjustment_time_sixty_minute_records(the_hour_records)
       adjustment_time = Struct.new(:jikan_record_id, :time)
-      the_hour_records.map do |record|
-        # record[:get_on_time_minute] <= 60 ? record[:get_on_time_minute] : record[:get_on_time_minute] + 60
-        if record[:get_on_time_minute] <= 60
-          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour],
-                          record[:get_on_time_minute], 0, "+09:00")
-          adjustment_time.new(record[:id], time)
+      the_hour_records_to_a = the_hour_records.pluck(:id, :get_on_time_hour, :get_on_time_minute)
+      the_hour_records_to_a.each_with_object([]) do |record, array|
+        if record[2] <= 60
+          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[1], record[2], 0, "+09:00")
+          array << adjustment_time.new(record[0], time)
         else
-          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour] + 1,
-                          record[:get_on_time_minute] - 60, 0, "+09:00")
-          adjustment_time.new(jikan_record_id[:id], time)
+          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[1] + 1, record[2] - 60, 0, "+09:00")
+          array << adjustment_time.new(record[0], time)
         end
       end
     end
@@ -84,11 +82,15 @@ class Jikan < ApplicationRecord
     end
 
     def current_time
-      Time.zone.now
+      if Time.zone.now.hour > 20
+        Time.new(Time.now.year, Time.now.mon, Time.now.yesterday, 7, 0, 0, "+09:00")
+      else
+        Time.zone.now
+      end
     end
 
     def formate_current_time
-      current_time.strftime("%m月/%d日 %H時:%M分:%S秒")
+      Time.zone.now.strftime("%m月/%d日 %H時:%M分:%S秒")
     end
 
     def set_caluculation_result_struct(time, hash)
