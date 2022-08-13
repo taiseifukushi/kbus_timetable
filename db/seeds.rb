@@ -127,7 +127,7 @@ def create_jikokuhyo(zipped_lists, _route)
       Jikan.create(
         bus_stop_id: find_bus_stop_id(name),
         order: index,
-        get_on_time_hour: count + 6, # 6を足すことで時間を指定する
+        get_on_time_hour: count + 7, # 7を足すことで時間を指定する
         get_on_time_minute: minute,
         row: count
       )
@@ -135,7 +135,6 @@ def create_jikokuhyo(zipped_lists, _route)
   end
 end
 
-# ==========
 oji_zipping_list     = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
 tabata_zipping_list  = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
 
