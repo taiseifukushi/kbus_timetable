@@ -39,42 +39,44 @@ class BusStop < ApplicationRecord
     滝野川会館
     滝野川小学校
     霜降橋
-    JR駒込駅
   ].freeze
 
   RELAY_POINT = {
+    # 上り
     up: %w[
       JR駒込駅
       JR駒込駅
     ],
+    # 下り
     down: %w[
       滝野川会館
       旧古河庭園2
     ]
   }.freeze
 
-  def self.calculate_wait_time(on, off)
-    get_on             = on
-    get_off            = off
-    get_on_bus_stop_id = BusStop.find_by(name: get_on)&.id
-    # binding.pry
-    if norikae?(get_on, get_off)
-      binding.pry
-      up = { up: up?(get_on) }
-      Jikan.call_calculate_wait_time(get_on_bus_stop_id, up)
-    else
-      Jikan.non_wait_time(get_on_bus_stop_id)
+  class << self
+    def calculate_wait_time(on, off)
+      get_on_bus_stop_id = BusStop.find_by(name: on).id
+      get_off_bus_stop_id = BusStop.find_by(name: off).id
+      if norikae?(on, off)
+        Jikan.wait_time_hash(get_on_bus_stop_id, get_on_bus_stop_id, relay_points(on))
+      else
+        non_wait_time_hash
+      end
     end
-  end
 
-  private
+    private
 
-  def norikae?(get_on, get_off)
-    binding.pry
-    OJI_ROUTE.include?(get_on) && OJI_ROUTE.include?(get_off) ? false : true
-  end
+    def norikae?(on, off)
+      !(OJI_ROUTE.include?(on) == OJI_ROUTE.include?(off))
+    end
 
-  def up?(get_on)
-    OJI_ROUTE.include?(get_on) ? true : false
+    def relay_points(on)
+      OJI_ROUTE.include?(on) ? RELAY_POINT[:up] : RELAY_POINT[:down]
+    end
+
+    def non_wait_time_hash
+      { relay_point: nil, wait_time: false }
+    end
   end
 end

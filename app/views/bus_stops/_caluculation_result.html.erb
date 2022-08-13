@@ -1,0 +1,48 @@
+<%= turbo_frame_tag "caluculation_result" do %>
+  <% if @caluculation[:wait_time] %>
+    <h3>中継地点での待ち時間</h3>
+    <%= render partial: "current_time", locals: { current_time: @caluculation[:current_time] } %>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <%= "乗車時間" %>
+          </th>
+          <th>
+            <%= "中継地点到着時間" %>
+          </th>
+          <th>
+            <%= "中継地点待ち時間" %>
+          </th>
+          <th>
+            <%= "中継地点出発時間" %>
+          </th>
+          <th>
+            <%= "降車時間" %>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <%= @caluculation[:get_on] %>
+          </td>
+          <td>
+            <%= @caluculation[:relay_point_off] %>
+          </td>
+          <td>
+            <%= @caluculation[:wait_time] %>
+          </td>
+          <td>
+            <%= @caluculation[:relay_point_on] %>
+          </td>
+          <td>
+            <%= @caluculation[:get_off] %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <% else %>
+    乗換なし
+  <% end %>
+<% end %>

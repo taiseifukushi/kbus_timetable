@@ -1,17 +1,33 @@
-<h1>乗換待ち時間計算 北区コミュニティバス - Kバス</h1>
 <h2>乗降するバス停を選択してください</h2>
-<%# バリデーションを追加する %>
 
 <%= form_with(model: @bus_stop, url: "/search", method: :get) do |f| %>
-    <div>
-        <%= f.label :title, "乗車:" %>
-        <%= f.select :get_on, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
-    </div>
-    <div>
-        <%= f.label :title, "降車:" %>
-        <%= f.select :get_off, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <%= f.label :title, "乗車" %>
+                </th>
+                <th>
+                    <%= f.label :title, "降車" %>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <%= f.select :get_on, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
+                </td>
+                <td>
+                    <%= f.select :get_off, @bus_stop.map{|b| [b.name, b.name]}, include_blank: "選択して下さい" %>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <%= f.submit "検索" %>
 <% end %>
 
-<%= render 'caluculated' %>
+<% if %>
+    <%= render "caluculation_result" %>
+<% else %>
+    <%= render "both_are_not_entered" %>
+<% end %>
