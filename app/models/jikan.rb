@@ -10,7 +10,8 @@ class Jikan < ApplicationRecord
       build_time_get_off = adjustment_time_sixty_minute_records(relay_point_record[1])
 
       wait_time = wait_time(build_time_get_on, build_time_get_off)
-      hash = build_result_hash(relay_point_record[0], relay_point_record[1], build_time_get_on, build_time_get_off, wait_time)
+      hash = build_result_hash(relay_point_record[0], relay_point_record[1], build_time_get_on, build_time_get_off,
+                               wait_time)
       set_caluculation_result_struct(formate_current_time, hash)
     end
 
@@ -19,26 +20,35 @@ class Jikan < ApplicationRecord
     def record_boarding_time(get_on_id, current_time)
       # 乗る時間のレコードを見つける
       the_hour_records = Jikan.where(bus_stop_id: get_on_id).where(get_on_time_hour: current_time.hour)
-      the_adjustment_hour_records = adjustment_time_sixty_minute_records(the_hour_records)
-
-      record_boarding_time = the_adjustment_hour_records.min_by do |record|
-        (record[:time] - current_time).abs
-      end
-      Jikan.find(record_boarding_time[:jikan_record_id])
+      close_to_record = search_close_to_record(the_hour_records)
     end
 
     def record_relay_point_boarding_time(relay_points, get_on_record)
       # 中継地点で降りる/乗る時間のレコードを探す
-      relay_point_off = relay_points[0]
-      relay_point_on = relay_points[1]
-      
-      the_hour_records = Jikan.where(row: get_on_record[:row]).where(order: get_on_record[:order])
-      [the_hour_records.where(name: relay_point_off)[0], the_hour_records.where(name: relay_point_on)[0]]
+      relay_point_off_id = BusStop.find_by(name: relay_points[0])[:id]
+      relay_point_on_id = BusStop.find_by(name: relay_points[1])[:id]
+
+      the_hour_records_relay_point_off = Jikan.where(bus_stop_id: relay_point_off_id).where(row: get_on_record[:row])
+      the_hour_records_relay_point_on = Jikan.where(bus_stop_id: relay_point_on_id).where(row: get_on_record[:row])
+
+      record_relay_point_off = search_close_to_record(the_hour_records_relay_point_off)
+      record_relay_point_on = search_close_to_record(the_hour_records_relay_point_on)
+
+      [record_relay_point_off, record_relay_point_on]
     end
-    
+
     def record_get_off_time(get_off_id, get_on_record)
       # 目的のバス停で降りる時間のレコードを探す
-      the_hour_record = Jikan.where(row: get_on_record[:row]).where(order: get_on_record[:order]).find_by(bus_stop_id: get_off_id)[0]
+      the_hour_records = Jikan.where(bus_stop_id: get_off_id).where(row: get_on_record[:row])
+      close_to_record = search_close_to_record(the_hour_records)
+    end
+
+    def search_close_to_record(records)
+      the_adjustment_hour_records = adjustment_time_sixty_minute_records(records)
+      record_close_to_time = the_adjustment_hour_records.min_by do |record|
+        (record[:time] - current_time).abs
+      end
+      Jikan.find(record_close_to_time[:jikan_record_id])
     end
 
     # DBに保存していた60分加算していたレコードを現実時間と比較できるように調整
@@ -48,10 +58,12 @@ class Jikan < ApplicationRecord
       the_hour_records.map do |record|
         # record[:get_on_time_minute] <= 60 ? record[:get_on_time_minute] : record[:get_on_time_minute] + 60
         if record[:get_on_time_minute] <= 60
-          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour], record[:get_on_time_minute], 0, "+09:00")
+          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour],
+                          record[:get_on_time_minute], 0, "+09:00")
           adjustment_time.new(record[:id], time)
         else
-          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour] + 1, record[:get_on_time_minute] - 60, 0, "+09:00")
+          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour] + 1,
+                          record[:get_on_time_minute] - 60, 0, "+09:00")
           adjustment_time.new(jikan_record_id[:id], time)
         end
       end
@@ -63,11 +75,11 @@ class Jikan < ApplicationRecord
 
     def build_result_hash(relay_point_off, relay_point_on, get_on, get_off, wait_time)
       {
-        relay_point_off: relay_point_off,
-        relay_point_on: relay_point_on,
-        get_on: get_on,
-        get_off: get_off,
-        wait_time: wait_time
+        relay_point_off:,
+        relay_point_on:,
+        get_on:,
+        get_off:,
+        wait_time:
       }
     end
 
