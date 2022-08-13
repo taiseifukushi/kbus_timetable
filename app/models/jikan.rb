@@ -4,7 +4,7 @@ class Jikan < ApplicationRecord
   class << self
     def wait_time_hash(get_on_bus_stop_id, get_off_bus_stop_id, relay_points)
       get_on_record = record_boarding_time(get_on_bus_stop_id, current_time)
-      relay_point_record = record_relay_point_boarding_time(get_on_bus_stop_id, get_on_record)
+      relay_point_record = record_relay_point_boarding_time(relay_points, get_on_record)
       get_off_record = record_get_off_time(get_off_bus_stop_id, get_on_record)
       build_time_get_on = adjustment_time_sixty_minute_records(relay_point_record[0])
       build_time_get_off = adjustment_time_sixty_minute_records(relay_point_record[1])
@@ -33,7 +33,7 @@ class Jikan < ApplicationRecord
       relay_point_on = relay_points[1]
       
       the_hour_records = Jikan.where(row: get_on_record[:row]).where(order: get_on_record[:order])
-      [off.where(name: relay_point_off)[0], on.where(name: relay_point_on)[0]]
+      [the_hour_records.where(name: relay_point_off)[0], the_hour_records.where(name: relay_point_on)[0]]
     end
     
     def record_get_off_time(get_off_id, get_on_record)
@@ -48,10 +48,10 @@ class Jikan < ApplicationRecord
       the_hour_records.map do |record|
         # record[:get_on_time_minute] <= 60 ? record[:get_on_time_minute] : record[:get_on_time_minute] + 60
         if record[:get_on_time_minute] <= 60
-          time = Time.new(Time.now.year, record[:get_on_time_hour], records[:get_on_time_minute])
+          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour], record[:get_on_time_minute], 0, "+09:00")
           adjustment_time.new(record[:id], time)
         else
-          time = Time.new(Time.now.year, record[:get_on_time_hour] + 1 , records[:get_on_time_minute] - 60)
+          time = Time.new(Time.now.year, Time.now.mon, Time.now.day, record[:get_on_time_hour] + 1, record[:get_on_time_minute] - 60, 0, "+09:00")
           adjustment_time.new(jikan_record_id[:id], time)
         end
       end
