@@ -75,7 +75,7 @@ group :test do
   gem "webdrivers"
 end
 
-gem "erb_lint" # https://github.com/Shopify/erb-lint
+gem "erb_lint", require: false # https://github.com/Shopify/erb-lint
 gem "ransack" # https://github.com/activerecord-hackery/ransack
 gem "rubocop"
 gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails

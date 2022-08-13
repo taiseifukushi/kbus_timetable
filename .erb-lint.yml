@@ -5,6 +5,11 @@ linters:
     enabled: true
   FinalNewline:
     enabled: true
+  SpaceAroundErbTag:
+    enabled: true
+  SelfClosingTag:
+    enabled: true
+    enforced_style: 'always'
   Rubocop:
     enabled: true
     rubocop_config:
