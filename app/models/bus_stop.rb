@@ -59,7 +59,7 @@ class BusStop < ApplicationRecord
       get_on_bus_stop_id = BusStop.find_by(name: on).id
       get_off_bus_stop_id = BusStop.find_by(name: off).id
       if norikae?(on, off)
-        Jikan.wait_time_hash(get_on_bus_stop_id, get_on_bus_stop_id, relay_points(on))
+        Jikan.wait_time_hash(get_on_bus_stop_id, get_off_bus_stop_id, relay_points(on))
       else
         non_wait_time_hash
       end
