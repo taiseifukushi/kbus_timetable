@@ -3,15 +3,21 @@ class Jikan < ApplicationRecord
 
   class << self
     def wait_time_hash(get_on_bus_stop_id, get_off_bus_stop_id, relay_points)
-      get_on_record      = record_boarding_time(get_on_bus_stop_id, current_time)
-      relay_point_records = record_relay_point_boarding_time(relay_points, get_on_record)
-      get_off_record     = record_get_off_time(get_off_bus_stop_id, get_on_record)
-      build_time_get_on_struct  = adjustment_time_sixty_minute_record(relay_point_records[0])
-      build_time_get_off_struct = adjustment_time_sixty_minute_record(relay_point_records[1])
+      get_on_record                         = record_boarding_time(get_on_bus_stop_id, current_time)
+      relay_point_records                   = record_relay_point_time(relay_points, get_on_record)
+      get_off_record                        = record_get_off_time(get_off_bus_stop_id, get_on_record)
+      build_time_arriving_relay_point_struct  = adjustment_time_sixty_minute_record(relay_point_records[0])
+      build_time_leaving_relay_point_struct = adjustment_time_sixty_minute_record(relay_point_records[1])
+      wait_time                             = wait_time(build_time_arriving_relay_point_struct, build_time_leaving_relay_point_struct)
 
-      wait_time          = wait_time(build_time_get_on_struct, build_time_get_off_struct)
-      hash               = build_result_hash(relay_point_records[0], relay_point_records[1], build_time_get_on, build_time_get_off, wait_time)
-      set_caluculation_result_struct(formate_current_time, hash)
+      hash = build_result_hash(
+        format_record_time(get_on_record),                          # :get_on_time
+        format_strcut_time(build_time_arriving_relay_point_struct), # :arriving_relay_point_time
+        wait_time,                                                  # :wait_time
+        format_strcut_time(build_time_leaving_relay_point_struct),  # :leaving_relay_point_time
+        format_record_time(get_off_record),                         # :get_off
+      )
+      set_caluculation_result_struct(format_current_time, hash)
     end
 
     private
@@ -22,25 +28,27 @@ class Jikan < ApplicationRecord
       close_to_record = search_close_to_record(the_hour_records)
     end
 
-    def record_relay_point_boarding_time(relay_points, get_on_record)
+    def record_relay_point_time(relay_points, get_on_record)
       # 中継地点で降りる/乗る時間のレコードを探す
-      relay_point_off_id = BusStop.find_by(name: relay_points[0])[:id]
-      relay_point_on_id = BusStop.find_by(name: relay_points[1])[:id]
+      arriving_relay_point_id = BusStop.find_by(name: relay_points[0])[:id]
+      leaving_relay_point_on_id = BusStop.find_by(name: relay_points[1])[:id]
 
       same_row = Jikan.where(row: get_on_record[:row])
-      the_hour_records_relay_point_off = same_row.where(bus_stop_id: relay_point_off_id)
-      the_hour_records_relay_point_on = same_row.where(bus_stop_id: relay_point_on_id)
+      the_hour_records_arriving_relay_point = same_row.where(bus_stop_id: arriving_relay_point_id)
+      the_hour_records_leaving_relay_point = same_row.where(bus_stop_id: leaving_relay_point_on_id)
 
-      record_relay_point_off = search_close_to_record(the_hour_records_relay_point_off)
-      record_relay_point_on = search_close_to_record(the_hour_records_relay_point_on)
-
-      [record_relay_point_off, record_relay_point_on]
+      [the_hour_records_arriving_relay_point, the_hour_records_leaving_relay_point].map do |record|
+        # the_hour_records が Jikan::ActiveRecord_Relation(Jikanクラス)の場合に、`search_close_to_record`を呼ぶ
+        search_close_to_record(record) unless record.class == self
+      end
     end
 
     def record_get_off_time(get_off_id, get_on_record)
       # 目的のバス停で降りる時間のレコードを探す
-      binding.pry
+      # binding.pry
       the_hour_records = Jikan.where(bus_stop_id: get_off_id).where(row: get_on_record[:row])
+      # the_hour_records が Jikan::ActiveRecord_Relation(Jikanクラス)の場合に、`search_close_to_record`を呼ぶ
+      search_close_to_record(the_hour_records) unless the_hour_records.class == self
     end
 
     def search_close_to_record(records)
@@ -48,7 +56,6 @@ class Jikan < ApplicationRecord
       record_close_to_time = the_adjustment_hour_records.min_by do |record|
         (record[:time] - current_time).abs
       end
-      # binding.pry
       Jikan.find(record_close_to_time[:jikan_record_id])
     end
 
@@ -83,13 +90,13 @@ class Jikan < ApplicationRecord
       (relay_point_on_time_struct[:time] - relay_point_off_time_struct[:time]).abs
     end
 
-    def build_result_hash(relay_point_off, relay_point_on, get_on, get_off, wait_time)
+    def build_result_hash(get_on_time, arriving_relay_point_time, wait_time, leaving_relay_point_time, get_off_time)
       {
-        relay_point_off:,
-        relay_point_on:,
-        get_on:,
-        get_off:,
-        wait_time:
+        get_on_time:,
+        arriving_relay_point_time:,
+        wait_time:,
+        leaving_relay_point_time:,
+        get_off_time:,
       }
     end
 
@@ -101,26 +108,36 @@ class Jikan < ApplicationRecord
       end
     end
 
-    def formate_current_time
-      Time.zone.now.strftime("%m/%d %H:%M:%S")
+    def format_current_time
+      Time.zone.now.strftime("%H:%M:%S")
+    end
+
+    def format_strcut_time(jikan_struct)
+      jikan_struct[:time].strftime("%H:%M:%S")
+    end
+
+    def format_record_time(jikan_record)
+      # binding.pry
+      t = Time.new(Time.now.year, Time.now.mon, Time.now.day, jikan_record[:get_on_time_hour], jikan_record[:get_on_time_hour], 0, "+09:00")
+      t.strftime("%H:%M:%S")
     end
 
     def set_caluculation_result_struct(time, hash)
       caluculator = Struct.new(
         :current_time,
-        :relay_point_off,
-        :relay_point_on,
-        :get_on,
-        :get_off,
-        :wait_time
+        :get_on_time,
+        :arriving_relay_point_time,
+        :wait_time,
+        :leaving_relay_point_time,
+        :get_off_time,
       )
       caluculator.new(
         time,
-        hash[:relay_point_off],
-        hash[:relay_point_on],
-        hash[:get_on],
-        hash[:get_off],
-        hash[:wait_time]
+        hash[:get_on_time],
+        hash[:arriving_relay_point_time],
+        hash[:wait_time],
+        hash[:leaving_relay_point_time],
+        hash[:get_off_time],
       )
     end
   end
