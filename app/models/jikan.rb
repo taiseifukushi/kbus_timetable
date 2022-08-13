@@ -1,104 +1,101 @@
 class Jikan < ApplicationRecord
   belongs_to :bus_stop
 
-  def self.call_calculate_wait_time(id, _is_up)
-    records = tuple_record_before_relay_point_relay_point(get_on_bus_stop_id, is_up_hash)
-    before_relay_point_time = fix_time(records[0])
-    relay_point_time        = fix_time(records[1])
-    wait_time               = (before_relay_point_time - relay_point_time).abs
+  class << self
+    def wait_time_hash(get_on_bus_stop_id, get_off_bus_stop_id, relay_points)
+      get_on_record = record_boarding_time(get_on_bus_stop_id, current_time)
+      relay_point_record = record_relay_point_boarding_time(get_on_bus_stop_id, get_on_record)
+      get_off_record = record_get_off_time(get_off_bus_stop_id, get_on_record)
+      build_time_get_on = adjustment_time_sixty_minute_records(relay_point_record[0])
+      build_time_get_off = adjustment_time_sixty_minute_records(relay_point_record[1])
 
-    {
-      close_to_time_get_on: getting_on_record_now_time(id),
-      is_wait_time: true,
-      wait_time:
-    }
-  end
+      wait_time = wait_time(build_time_get_on, build_time_get_off)
+      hash = build_result_hash(relay_point_record[0], relay_point_record[1], build_time_get_on, build_time_get_off, wait_time)
+      set_caluculation_result_struct(formate_current_time, hash)
+    end
 
-  def self.non_wait_time(id)
-    {
-      close_to_time_get_on: getting_on_record_now_time(id),
-      is_wait_time: false,
-      wait_time: 0
-    }
-  end
+    private
 
-  private
+    def record_boarding_time(get_on_id, current_time)
+      # 乗る時間のレコードを見つける
+      the_hour_records = Jikan.where(bus_stop_id: get_on_id).where(get_on_time_hour: current_time.hour)
+      the_adjustment_hour_records = adjustment_time_sixty_minute_records(the_hour_records)
 
-  def tuple_record_before_relay_point_relay_point(get_on_bus_stop_id, is_up_hash)
-    relay_point = if is_up_hash[:up]
-                    RELAY_POINT[:up]
-                  else
-                    RELAY_POINT[:down]
-                  end
+      record_boarding_time = the_adjustment_hour_records.min_by do |record|
+        (record[:time] - current_time).abs
+      end
+      Jikan.find(record_boarding_time[:jikan_record_id])
+    end
 
-    close_to_record    = getting_on_record_now_time(get_on_bus_stop_id)
-    row                = close_to_record[:row]
-    before_relay_point = relay_point[0]
-    relay_point        = relay_point[1]
-    before_relay_point_record       = Jikan.where(name: before_relay_point).find_by(row:)
-    relay_point_id                  = BusStop.find_by(name: relay_point)[:id]
-    _before_relay_point_get_off_fixed_time = fix_time(_record)
+    def record_relay_point_boarding_time(relay_points, get_on_record)
+      # 中継地点で降りる/乗る時間のレコードを探す
+      relay_point_off = relay_points[0]
+      relay_point_on = relay_points[1]
+      
+      the_hour_records = Jikan.where(row: get_on_record[:row]).where(order: get_on_record[:order])
+      [off.where(name: relay_point_off)[0], on.where(name: relay_point_on)[0]]
+    end
+    
+    def record_get_off_time(get_off_id, get_on_record)
+      # 目的のバス停で降りる時間のレコードを探す
+      the_hour_record = Jikan.where(row: get_on_record[:row]).where(order: get_on_record[:order]).find_by(bus_stop_id: get_off_id)[0]
+    end
 
-    relay_point_record = getting_on_record_select_time(relay_point_id, _before_relay_point_get_off_fixed_time)
-    [before_relay_point_record, relay_point_record]
-  end
+    # DBに保存していた60分加算していたレコードを現実時間と比較できるように調整
+    # 15時82分 => 16時22分
+    def adjustment_time_sixty_minute_records(the_hour_records)
+      adjustment_time = Struct.new(:jikan_record_id, :time)
+      the_hour_records.map do |record|
+        # record[:get_on_time_minute] <= 60 ? record[:get_on_time_minute] : record[:get_on_time_minute] + 60
+        if record[:get_on_time_minute] <= 60
+          time = Time.new(Time.now.year, record[:get_on_time_hour], records[:get_on_time_minute])
+          adjustment_time.new(record[:id], time)
+        else
+          time = Time.new(Time.now.year, record[:get_on_time_hour] + 1 , records[:get_on_time_minute] - 60)
+          adjustment_time.new(jikan_record_id[:id], time)
+        end
+      end
+    end
 
-  def getting_on_record_select_time(id, time)
-    records = Jikan.where(bus_stop_id: id) # 駅のレコードが出てくる
-                   .where(get_on_time_hour: time.hour) # 時間で絞る
-    last_record = fix_last_record(records)
+    def wait_time(relay_point_off_time, relay_point_on_time)
+      (relay_point_off_time - relay_point_on_time).abs
+    end
 
-    close_to_record = if time < last_record
-                        records.min_by do |record|
-                          fix_minute = fix_record_minute(record)
-                          (fix_minute - time.minute).abs
-                        end
-                      else
-                        Jikan.where(bus_stop_id: id)
-                             .where(get_on_time_hour: time.hour + 1)
-                             .first
-                      end
-  end
+    def build_result_hash(relay_point_off, relay_point_on, get_on, get_off, wait_time)
+      {
+        relay_point_off: relay_point_off,
+        relay_point_on: relay_point_on,
+        get_on: get_on,
+        get_off: get_off,
+        wait_time: wait_time
+      }
+    end
 
-  def getting_on_record_now_time(bus_stop_id)
-    time = current_time
-    records = Jikan.where(bus_stop_id:) # 駅のレコードが出てくる
-                   .where(get_on_time_hour: time.hour) # 時間で絞る
-    last_record = fix_last_record(records)
+    def current_time
+      Time.zone.now
+    end
 
-    close_to_record = if time < last_record
-                        records.min_by do |record|
-                          fix_minute = fix_record_minute(record)
-                          (fix_minute - time.minute).abs
-                        end
-                      else
-                        Jikan.where(bus_stop_id:)
-                             .where(get_on_time_hour: time.hour + 1)
-                             .first
-                      end
-  end
+    def formate_current_time
+      current_time.strftime("%m月/%d日 %H時:%M分:%S秒")
+    end
 
-  def fix_last_records(records)
-    Time.new(
-      Time.now.year,
-      records.last[:get_on_time_minute] <= 60 ? records.last[:get_on_time_hour] : records.last[:get_on_time_hour] + 1,
-      records.last[:get_on_time_minute] <= 60 ? records.last[:get_on_time_minute] : records.last[:get_on_time_minute] - 60
-    )
-  end
-
-  def fix_record_minute(record)
-    records[:get_on_time_minute] <= 60 ? record[:get_on_time_minute] : record[:get_on_time_minute] - 60
-  end
-
-  def fix_time(record)
-    Time.new(
-      Time.now.year,
-      record[:get_on_time_minute] <= 60 ? record[:get_on_time_hour] : record[:get_on_time_hour] + 1,
-      record[:get_on_time_minute] <= 60 ? record[:get_on_time_minute] : record[:get_on_time_minute] - 60
-    )
-  end
-
-  def current_time
-    Time.zone.now
+    def set_caluculation_result_struct(time, hash)
+      caluculator = Struct.new(
+        :current_time,
+        :relay_point_off,
+        :relay_point_on,
+        :get_on,
+        :get_off,
+        :wait_time
+      )
+      caluculator.new(
+        time,
+        hash[:relay_point_off],
+        hash[:relay_point_on],
+        hash[:get_on],
+        hash[:get_off],
+        hash[:wait_time]
+      )
+    end
   end
 end
