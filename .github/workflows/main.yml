@@ -17,3 +17,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "k-bus-norikae-app"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true # https://github.com/marketplace/actions/deploy-to-heroku#deploy-with-docker
