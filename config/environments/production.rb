@@ -31,9 +31,7 @@ Rails.application.configure do
   config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # https://guides.rubyonrails.org/configuring.html#actiondispatch-hostauthorization
-  # 本番環境でのヘッダー攻撃を防ぎたい場合は、許可されたホストを次のように手動で許可する必要がある
-  config.asset_host = "https://k-bus-norikae-app.herokuapp.com/"
+  # config.asset_host = "http://assets.example.com"
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
@@ -92,4 +90,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # https://guides.rubyonrails.org/configuring.html#actiondispatch-hostauthorization
+  # 本番環境でのヘッダー攻撃を防ぎたい場合は、許可されたホストを次のように手動で許可する必要がある
+  # https://github.com/rails/rails/pull/33145
+  config.hosts << "https://k-bus-norikae-app.herokuapp.com/"
 end
