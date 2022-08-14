@@ -40,11 +40,11 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo "Executing ''"
-          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
+          echo "Executing 'heroku container:push'"
+          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} production
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           echo "Executing 'heroku container:release'"
-          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
+          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} production
