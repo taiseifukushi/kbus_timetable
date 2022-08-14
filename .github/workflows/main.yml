@@ -41,7 +41,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           echo "Executing 'heroku container:push'"
-          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} production
+          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} production --recursive
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

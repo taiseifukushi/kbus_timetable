@@ -8,8 +8,8 @@ RUN bundle install
 COPY . /rails_app
 
 # Add a script to be executed every time the container starts.
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
+COPY entrypoint_production.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint_production.sh
 ENTRYPOINT ["entrypoint_production.sh"]
 EXPOSE 3000
 
