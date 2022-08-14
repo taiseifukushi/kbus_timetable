@@ -15,10 +15,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "k-bus-norikae-app"
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          usedocker: true # https://github.com/marketplace/actions/deploy-to-heroku#deploy-with-docker
-
+      # - uses: akhileshns/heroku-deploy@v3.12.12
+      #   with:
+      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+      #     heroku_app_name: "k-bus-norikae-app"
+      #     heroku_email: ${{secrets.HEROKU_EMAIL}}
+      #     usedocker: true # https://github.com/marketplace/actions/deploy-to-heroku#deploy-with-docker
+      - name: Login to Heroku Container registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          echo "Executing 'heroku container:login'"
+          heroku container:login
+      - name: Push heroku.yml to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          echo "Executing 'git push heroku master'"
+          git add heroku.yml
+          git commit -m "Add heroku.yml"
+          heroku stack:set container
+          git push heroku master
+      # - name: Build and push
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      #   run: |
+      #     echo "Executing ''"
+      #     heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
+      # - name: Release
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      #   run: |
+      #     echo "Executing 'heroku container:release'"
+      #     heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
