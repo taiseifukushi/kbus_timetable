@@ -1,6 +1,6 @@
 # https://github.com/AkhileshNS/heroku-deploy
 # https://github.com/marketplace/actions/deploy-to-heroku
-name: Deploy
+name: Deploy to Heroku
 
 on:
   push:
@@ -21,3 +21,7 @@ jobs:
           heroku_app_name: "k-bus-norikae-app"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true # https://github.com/marketplace/actions/deploy-to-heroku#deploy-with-docker
+      - run: |
+          heroku auth:whoami
+          echo "Set Jikokuhyo Data"s
+          docker compose run web rails db:drop db:create db:migrate db:seed RAILS_ENV=production
