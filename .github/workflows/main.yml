@@ -11,6 +11,7 @@ jobs:
   build:
     environment:
         name: production
+        url: "https://k-bus-norikae-app.herokuapp.com/"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
