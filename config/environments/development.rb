@@ -67,9 +67,4 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
-
-  # https://guides.rubyonrails.org/configuring.html#actiondispatch-hostauthorization
-  # 本番環境でのヘッダー攻撃を防ぎたい場合は、許可されたホストを次のように手動で許可する必要がある
-  # https://github.com/rails/rails/pull/33145
-  config.hosts << "k-bus-norikae-app.herokuapp.com"
 end
