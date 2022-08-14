@@ -1,0 +1,18 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+build:
+  docker:
+    web: Dockerfile
+  config:
+    RACK_ENV: production
+    RAILS_ENV: production
+    RAILS_LOG_TO_STDOUT: enabled
+    RAILS_SERVE_STATIC_FILES: enabled
+release:
+  command:
+    - ./production-tasks.sh
+run:
+  web: |
+    heroku config:set RAILS_ENV=production
+    bundle exec puma -C config/puma.rb
