@@ -27,24 +27,24 @@ jobs:
         run: |
           echo "Executing 'heroku container:login'"
           heroku container:login
-      - name: Push heroku.yml to Heroku
+      # - name: Push heroku.yml to Heroku
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      #   run: |
+      #     echo "Executing 'git push heroku master'"
+      #     git add heroku.yml
+      #     git commit -m "Add heroku.yml"
+      #     heroku stack:set container
+      #     git push heroku master
+      - name: Build and push
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo "Executing 'git push heroku master'"
-          git add heroku.yml
-          git commit -m "Add heroku.yml"
-          heroku stack:set container
-          git push heroku master
-      # - name: Build and push
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      #   run: |
-      #     echo "Executing ''"
-      #     heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
-      # - name: Release
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      #   run: |
-      #     echo "Executing 'heroku container:release'"
-      #     heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
+          echo "Executing ''"
+          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          echo "Executing 'heroku container:release'"
+          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
