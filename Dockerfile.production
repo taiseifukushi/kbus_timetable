@@ -15,5 +15,4 @@ EXPOSE 3000
 
 # # pumaを使ってサーバーを起動
 # # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#config
-CMD ["RAILS_ENV=production", "bundle", "exec", "puma", "-C", "config/puma.rb"]
-# CMD ["bundle", "exec", "rails", "server", "-e", "production"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e", "production"]
