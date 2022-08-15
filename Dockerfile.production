@@ -8,12 +8,12 @@ RUN bundle install
 COPY . /rails_app
 
 # Add a script to be executed every time the container starts.
-COPY entrypoint_production.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint_production.sh
-ENTRYPOINT ["entrypoint_production.sh"]
+# COPY entrypoint_production.sh /usr/bin/
+# RUN chmod +x /usr/bin/entrypoint_production.sh
+# ENTRYPOINT ["entrypoint_production.sh"]
 EXPOSE 3000
 
 # # pumaを使ってサーバーを起動
 # # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#config
-# CMD ["RAILS_ENV=production", "bundle", "exec", "puma", "-C", "config/puma.rb"]
-CMD ["bundle", "exec", "rails", "server", "-e", "production"]
+CMD ["RAILS_ENV=production", "bundle", "exec", "puma", "-C", "config/puma.rb"]
+# CMD ["bundle", "exec", "rails", "server", "-e", "production"]
