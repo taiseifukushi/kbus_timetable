@@ -27,15 +27,6 @@ jobs:
         run: |
           echo "Executing 'heroku container:login'"
           heroku container:login
-      # - name: Push heroku.yml to Heroku
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      #   run: |
-      #     echo "Executing 'git push heroku master'"
-      #     git add heroku.yml
-      #     git commit -m "Add heroku.yml"
-      #     heroku stack:set container
-      #     git push heroku master
       - name: Build and push
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -54,10 +45,10 @@ jobs:
           heroku run bin/rails db:environment:set RAILS_ENV=production \
             -a ${{ secrets.HEROKU_APP_NAME }}
           echo "heroku run bundle exec bin/rails db:drop db:create db:migrate db:seed"
-          heroku run bundle exec bin/rails db:drop db:create db:migrate db:seed \
+          heroku run bundle exec bin/rails db:create db:migrate db:seed \
             DISABLE_DATABASE_ENVIRONMENT_CHECK=1 \
             RAILS_ENV=production \
-            bundle exec bin/rails db:drop db:create db:migrate db:seed \
+            bundle exec bin/rails db:create db:migrate db:seed \
             -a ${{ secrets.HEROKU_APP_NAME }}
           echo "heroku ps"
           heroku ps -a ${{ secrets.HEROKU_APP_NAME }}
