@@ -48,11 +48,11 @@ jobs:
         run: |
           set -e
           echo "heroku config:set RAILS_ENV=production"
-          heroku config:set RAILS_ENV=production
+          heroku config:set RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
           echo "heroku run bundle exec rails db:drop db:create db:migrate db:seed RAILS_ENV=production"
-          heroku run bundle exec rails db:drop db:create db:migrate db:seed RAILS_ENV=production
+          heroku run bundle exec rails db:drop db:create db:migrate db:seed RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
           echo "heroku ps"
-          heroku ps
+          heroku ps -a ${{ secrets.HEROKU_APP_NAME }}
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
