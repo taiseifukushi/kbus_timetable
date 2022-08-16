@@ -8,12 +8,7 @@ RUN bundle install
 RUN apt-get update && apt-get -y install vim
 COPY . /rails_app
 
-# Add a script to be executed every time the container starts.
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+COPY start.sh /usr/bin/
+RUN chmod +x /usr/bin/start.sh
 EXPOSE 3000
-
-# ENV RAILS_ENV="production"
-# ENV RAILS_SERVE_STATIC_FILES=1
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD [ "sh", "start.sh" ]
