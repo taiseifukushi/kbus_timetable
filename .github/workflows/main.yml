@@ -21,5 +21,7 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true # https://github.com/marketplace/actions/deploy-to-heroku#deploy-with-docker
-
-
+          docker_build_args: |
+            RAILS_ENV
+        env:
+          RAILS_ENV: production
