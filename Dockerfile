@@ -11,8 +11,6 @@ COPY . /rails_app
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
-COPY deployment-tasks.sh /usr/bin/
-RUN chmod +x /usr/bin/deployment-tasks.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
