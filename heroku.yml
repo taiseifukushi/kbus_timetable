@@ -1,9 +1,7 @@
 build:
   docker:
     web: Dockerfile
-release:
-  image: web
-  command:
-    - ./deployment-tasks.sh
 run:
-  web: bundle exec rails sever -e production
+  web: |
+    bundle exec rails db:migrate db:seed RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1
+    bundle exec puma -C config/puma.rb
