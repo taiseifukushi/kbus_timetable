@@ -1,0 +1,8 @@
+build:
+  docker:
+    web: Dockerfile.production
+release:
+  command:
+    - ./deployment-tasks.sh
+run:
+  web: bundle exec puma -C config/puma.rb -e production
