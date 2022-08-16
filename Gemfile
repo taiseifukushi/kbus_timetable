@@ -81,6 +81,6 @@ gem "rubocop"
 gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails
 gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
 # gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
-gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
+gem "dotenv-rails", groups: %i[ development test ] # https://github.com/bkeepers/dotenv
 gem "sentry-rails"
 gem "sentry-ruby" # https://github.com/getsentry/sentry-ruby

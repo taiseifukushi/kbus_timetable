@@ -37,21 +37,14 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          set -e
-          echo "heroku config:set RAILS_ENV=production"
           heroku config:set RAILS_ENV=production \
             -a ${{ secrets.HEROKU_APP_NAME }}
-          echo "heroku run bin/rails db:environment:set RAILS_ENV=production"
           heroku run bin/rails db:environment:set RAILS_ENV=production \
             -a ${{ secrets.HEROKU_APP_NAME }}
-          echo "heroku run bundle exec bin/rails db:drop db:create db:migrate db:seed"
           heroku run bundle exec bin/rails db:create db:migrate db:seed \
             DISABLE_DATABASE_ENVIRONMENT_CHECK=1 \
             RAILS_ENV=production \
-            bundle exec bin/rails db:create db:migrate db:seed \
             -a ${{ secrets.HEROKU_APP_NAME }}
-          echo "heroku ps"
-          heroku ps -a ${{ secrets.HEROKU_APP_NAME }}
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

@@ -5,6 +5,7 @@ WORKDIR /rails_app
 COPY Gemfile /rails_app/Gemfile
 COPY Gemfile.lock /rails_app/Gemfile.lock
 RUN bundle install
+RUN apt-get update && apt-get -y install vim
 COPY . /rails_app
 
 # Add a script to be executed every time the container starts.
