@@ -15,12 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # - uses: akhileshns/heroku-deploy@v3.12.12
-      #   with:
-      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-      #     heroku_app_name: "k-bus-norikae-app"
-      #     heroku_email: ${{secrets.HEROKU_EMAIL}}
-      #     usedocker: true # https://github.com/marketplace/actions/deploy-to-heroku#deploy-with-docker
       - name: Login to Heroku Container registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -36,14 +30,19 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           heroku addons:create heroku-postgresql:hobby-dev -a ${{ secrets.HEROKU_APP_NAME }}
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} production
       - name: DB migrate
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           heroku run bundle exec bin/rails db:environment:set RAILS_ENV=production  -a ${{ secrets.HEROKU_APP_NAME }}
           heroku run bundle exec bin/rails db:create db:migrate db:seed DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
-      - name: Release
+      - name: Restart App
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} production
+          heroku ps:restart -a ${{ secrets.HEROKU_APP_NAME }}
