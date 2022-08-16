@@ -25,29 +25,25 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo "Executing 'heroku container:login'"
           heroku container:login
       - name: Build and push
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo "Executing 'heroku container:push'"
           heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} production --recursive
+      - name: Add addons heroku-postgresql:hobby-dev
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          heroku addons:create heroku-postgresql:hobby-dev -a ${{ secrets.HEROKU_APP_NAME }}
       - name: DB migrate
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          heroku config:set RAILS_ENV=production \
-            -a ${{ secrets.HEROKU_APP_NAME }}
-          heroku run bin/rails db:environment:set RAILS_ENV=production \
-            -a ${{ secrets.HEROKU_APP_NAME }}
-          heroku run bundle exec bin/rails db:create db:migrate db:seed \
-            DISABLE_DATABASE_ENVIRONMENT_CHECK=1 \
-            RAILS_ENV=production \
-            -a ${{ secrets.HEROKU_APP_NAME }}
+          heroku run bundle exec bin/rails db:environment:set RAILS_ENV=production  -a ${{ secrets.HEROKU_APP_NAME }}
+          heroku run bundle exec bin/rails db:create db:migrate db:seed DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo "Executing 'heroku container:release'"
           heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} production
