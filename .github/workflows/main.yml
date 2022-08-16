@@ -15,29 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Login to Heroku Container registry
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku container:login
-      - name: Build and push
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }}
-      - name: Release
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }}
-      - name: DB migrate
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku run bundle exec bin/rails db:environment:set RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
-          heroku run bundle exec bin/rails db:migrate db:seed DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
-      - name: Restart App
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku run bundle exec puma -C config/puma.rb -e production
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true # https://github.com/marketplace/actions/deploy-to-heroku#deploy-with-docker
+
+
