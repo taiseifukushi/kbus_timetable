@@ -25,11 +25,6 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} production --recursive
-      - name: Add addons heroku-postgresql:hobby-dev
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku addons:create heroku-postgresql:hobby-dev -a ${{ secrets.HEROKU_APP_NAME }}
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
