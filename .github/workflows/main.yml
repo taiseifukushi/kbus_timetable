@@ -24,20 +24,20 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} production --recursive
+          heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web --recursive
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} production
+          heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web
       - name: DB migrate
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          heroku run bundle exec bin/rails db:environment:set RAILS_ENV=production  -a ${{ secrets.HEROKU_APP_NAME }}
+          heroku run bundle exec bin/rails db:environment:set RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
           heroku run bundle exec bin/rails db:migrate db:seed DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production -a ${{ secrets.HEROKU_APP_NAME }}
       - name: Restart App
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          heroku ps:restart -a ${{ secrets.HEROKU_APP_NAME }}
+          heroku run bundle exec puma -C config/puma.rb -e production
