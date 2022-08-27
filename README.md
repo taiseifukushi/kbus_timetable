@@ -16,4 +16,4 @@
 
 
 ## アプリ
-https://k-bus-norikae-app.herokuapp.com/
+https://k-bus-norikae-app.onrender.com/
