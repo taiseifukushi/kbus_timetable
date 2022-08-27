@@ -3,8 +3,11 @@ services:
   - type: web
     name: web
     env: docker
-    repo: https://github.com/render-examples/webdis.git # optional
     region: oregon # optional (defaults to oregon)
-    plan: free # optional (defaults to starter)
+    plan: Free # optional (defaults to starter)
     branch: change-heroku-to-render # optional (defaults to master)
     healthCheckPath: /
+    dockerfilePath: ./Dockerfile
+
+databases:
+  - name: production
