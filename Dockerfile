@@ -10,6 +10,5 @@ COPY . /rails_app
 
 COPY start.sh /usr/bin/
 RUN chmod a+x /usr/bin/start.sh
-# RUN chmod +x /usr/bin/start.sh
 EXPOSE 3000
 CMD [ "sh", "start.sh" ]
