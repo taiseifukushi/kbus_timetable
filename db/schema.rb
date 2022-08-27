@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_10_153703) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_27_164250) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_10_153703) do
     t.string "type"
   end
 
-  create_table "jikans", force: :cascade do |t|
+  create_table "timetables", force: :cascade do |t|
     t.bigint "bus_stop_id"
     t.integer "order", null: false
     t.datetime "created_at", null: false
@@ -30,7 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_10_153703) do
     t.integer "get_on_time_hour"
     t.integer "get_on_time_minute"
     t.integer "row", null: false
-    t.index ["bus_stop_id"], name: "index_jikans_on_bus_stop_id"
+    t.index ["bus_stop_id"], name: "index_timetables_on_bus_stop_id"
   end
 
 end
