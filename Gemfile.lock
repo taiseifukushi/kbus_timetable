@@ -114,6 +114,9 @@ GEM
     erubi (1.10.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     html_tokenizer (0.0.7)
@@ -305,7 +308,7 @@ DEPENDENCIES
   debug
   dotenv-rails
   erb_lint
-  factory_bot
+  factory_bot_rails
   importmap-rails
   jbuilder
   pg
