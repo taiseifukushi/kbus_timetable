@@ -24,7 +24,7 @@ class Timetable < ApplicationRecord
     
     def record_boarding_time(get_on_id, current_time)
       # 乗る時間のレコードを見つける
-      the_hour_records = TimeTable.where(bus_stop_id: get_on_id).where(get_on_time_hour: current_time.hour)
+      the_hour_records = Timetable.where(bus_stop_id: get_on_id).where(get_on_time_hour: current_time.hour)
       close_to_record = search_close_to_record(the_hour_records)
     end
 
@@ -33,12 +33,12 @@ class Timetable < ApplicationRecord
       arriving_relay_point_id = BusStop.find_by(name: relay_points[0])[:id]
       leaving_relay_point_on_id = BusStop.find_by(name: relay_points[1])[:id]
 
-      same_row = TimeTable.where(row: get_on_record[:row])
+      same_row = Timetable.where(row: get_on_record[:row])
       the_hour_records_arriving_relay_point = same_row.where(bus_stop_id: arriving_relay_point_id)
       the_hour_records_leaving_relay_point = same_row.where(bus_stop_id: leaving_relay_point_on_id)
 
       [the_hour_records_arriving_relay_point, the_hour_records_leaving_relay_point].map do |record|
-        # the_hour_records が TimeTable::ActiveRecord_Relation(TimeTableクラス)の場合に、`search_close_to_record`を呼ぶ
+        # the_hour_records が Timetable::ActiveRecord_Relation(Timetableクラス)の場合に、`search_close_to_record`を呼ぶ
         search_close_to_record(record) unless record.class == self
       end
     end
@@ -46,8 +46,8 @@ class Timetable < ApplicationRecord
     def record_get_off_time(get_off_id, get_on_record)
       # 目的のバス停で降りる時間のレコードを探す
       # binding.pry
-      the_hour_records = TimeTable.where(bus_stop_id: get_off_id).where(row: get_on_record[:row])
-      # the_hour_records が TimeTable::ActiveRecord_Relation(TimeTableクラス)の場合に、`search_close_to_record`を呼ぶ
+      the_hour_records = Timetable.where(bus_stop_id: get_off_id).where(row: get_on_record[:row])
+      # the_hour_records が Timetable::ActiveRecord_Relation(Timetableクラス)の場合に、`search_close_to_record`を呼ぶ
       search_close_to_record(the_hour_records) unless the_hour_records.class == self
     end
 
@@ -56,7 +56,7 @@ class Timetable < ApplicationRecord
       record_close_to_time = the_adjustment_hour_records.min_by do |record|
         (record[:time] - current_time).abs
       end
-      TimeTable.find(record_close_to_time[:jikan_record_id])
+      Timetable.find(record_close_to_time[:jikan_record_id])
     end
 
     # DBに保存していた60分加算していたレコードを現実時間と比較できるように調整
