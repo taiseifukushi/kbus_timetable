@@ -6,22 +6,23 @@ class Timetable < ApplicationRecord
       get_on_record                         = record_boarding_time(get_on_bus_stop_id, current_time)
       relay_point_records                   = record_relay_point_time(relay_points, get_on_record)
       get_off_record                        = record_get_off_time(get_off_bus_stop_id, get_on_record)
-      build_time_arriving_relay_point_struct  = adjustment_time_sixty_minute_record(relay_point_records[0])
+      build_time_arriving_relay_point_struct = adjustment_time_sixty_minute_record(relay_point_records[0])
       build_time_leaving_relay_point_struct = adjustment_time_sixty_minute_record(relay_point_records[1])
-      wait_time                             = wait_time(build_time_arriving_relay_point_struct, build_time_leaving_relay_point_struct)
+      wait_time                             = wait_time(build_time_arriving_relay_point_struct,
+                                                        build_time_leaving_relay_point_struct)
 
       hash = build_result_hash(
         format_record_time(get_on_record),                          # :get_on_time
         format_strcut_time(build_time_arriving_relay_point_struct), # :arriving_relay_point_time
         wait_time,                                                  # :wait_time
         format_strcut_time(build_time_leaving_relay_point_struct),  # :leaving_relay_point_time
-        format_record_time(get_off_record),                         # :get_off
+        format_record_time(get_off_record) # :get_off
       )
       set_caluculation_result_struct(format_current_time, hash)
     end
 
     private
-    
+
     def record_boarding_time(get_on_id, current_time)
       # 乗る時間のレコードを見つける
       the_hour_records = Timetable.where(bus_stop_id: get_on_id).where(get_on_time_hour: current_time.hour)
@@ -39,7 +40,7 @@ class Timetable < ApplicationRecord
 
       [the_hour_records_arriving_relay_point, the_hour_records_leaving_relay_point].map do |record|
         # the_hour_records が Timetable::ActiveRecord_Relation(Timetableクラス)の場合に、`search_close_to_record`を呼ぶ
-        search_close_to_record(record) unless record.class == self
+        search_close_to_record(record) unless record.instance_of?(self)
       end
     end
 
@@ -48,7 +49,7 @@ class Timetable < ApplicationRecord
       # binding.pry
       the_hour_records = Timetable.where(bus_stop_id: get_off_id).where(row: get_on_record[:row])
       # the_hour_records が Timetable::ActiveRecord_Relation(Timetableクラス)の場合に、`search_close_to_record`を呼ぶ
-      search_close_to_record(the_hour_records) unless the_hour_records.class == self
+      search_close_to_record(the_hour_records) unless the_hour_records.instance_of?(self)
     end
 
     def search_close_to_record(records)
@@ -78,10 +79,12 @@ class Timetable < ApplicationRecord
     def adjustment_time_sixty_minute_record(the_hour_record)
       adjustment_time = Struct.new(:jikan_record_id, :time)
       if the_hour_record[:get_on_time_minute] <= 60
-        time = Time.new(Time.now.year, Time.now.mon, Time.now.day, the_hour_record[:get_on_time_hour], the_hour_record[:get_on_time_minute], 0, "+09:00")
+        time = Time.new(Time.now.year, Time.now.mon, Time.now.day, the_hour_record[:get_on_time_hour],
+                        the_hour_record[:get_on_time_minute], 0, "+09:00")
         adjustment_time.new(the_hour_record[:id], time)
       else
-        time = Time.new(Time.now.year, Time.now.mon, Time.now.day, the_hour_record[:get_on_time_hour] + 1, the_hour_record[:get_on_time_minute] - 60, 0, "+09:00")
+        time = Time.new(Time.now.year, Time.now.mon, Time.now.day, the_hour_record[:get_on_time_hour] + 1,
+                        the_hour_record[:get_on_time_minute] - 60, 0, "+09:00")
         adjustment_time.new(the_hour_record[:id], time)
       end
     end
@@ -96,7 +99,7 @@ class Timetable < ApplicationRecord
         arriving_relay_point_time:,
         wait_time:,
         leaving_relay_point_time:,
-        get_off_time:,
+        get_off_time:
       }
     end
 
@@ -118,7 +121,8 @@ class Timetable < ApplicationRecord
 
     def format_record_time(jikan_record)
       # binding.pry
-      t = Time.new(Time.now.year, Time.now.mon, Time.now.day, jikan_record[:get_on_time_hour], jikan_record[:get_on_time_hour], 0, "+09:00")
+      t = Time.new(Time.now.year, Time.now.mon, Time.now.day, jikan_record[:get_on_time_hour],
+                   jikan_record[:get_on_time_hour], 0, "+09:00")
       t.strftime("%H:%M:%S")
     end
 
@@ -129,7 +133,7 @@ class Timetable < ApplicationRecord
         :arriving_relay_point_time,
         :wait_time,
         :leaving_relay_point_time,
-        :get_off_time,
+        :get_off_time
       )
       caluculator.new(
         time,
@@ -137,7 +141,7 @@ class Timetable < ApplicationRecord
         hash[:arriving_relay_point_time],
         hash[:wait_time],
         hash[:leaving_relay_point_time],
-        hash[:get_off_time],
+        hash[:get_off_time]
       )
     end
   end
