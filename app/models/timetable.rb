@@ -57,13 +57,13 @@ class Timetable < ApplicationRecord
       record_close_to_time = the_adjustment_hour_records.min_by do |record|
         (record[:time] - current_time).abs
       end
-      Timetable.find(record_close_to_time[:jikan_record_id])
+      Timetable.find(record_close_to_time[:timetable_record_id])
     end
 
     # DBに保存していた60分加算していたレコードを現実時間と比較できるように調整
     # 15時82分 => 16時22分
     def adjustment_time_sixty_minute_records(the_hour_records)
-      adjustment_time = Struct.new(:jikan_record_id, :time)
+      adjustment_time = Struct.new(:timetable_record_id, :time)
       the_hour_records_to_a = the_hour_records.pluck(:id, :get_on_time_hour, :get_on_time_minute)
       the_hour_records_to_a.each_with_object([]) do |record, array|
         if record[2] <= 60
@@ -77,7 +77,7 @@ class Timetable < ApplicationRecord
     end
 
     def adjustment_time_sixty_minute_record(the_hour_record)
-      adjustment_time = Struct.new(:jikan_record_id, :time)
+      adjustment_time = Struct.new(:timetable_record_id, :time)
       if the_hour_record[:get_on_time_minute] <= 60
         time = Time.new(Time.now.year, Time.now.mon, Time.now.day, the_hour_record[:get_on_time_hour],
                         the_hour_record[:get_on_time_minute], 0, "+09:00")
