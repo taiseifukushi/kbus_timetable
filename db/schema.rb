@@ -10,26 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_220_827_164_250) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_04_035048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "bus_stops", force: :cascade do |t|
+  create_table "busstops", force: :cascade do |t|
     t.string "name", null: false
-    t.boolean "is_relay_point"
+    t.boolean "is_relay_point", null: false
+    t.string "type"
+    t.integer "stop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "type"
   end
 
   create_table "timetables", force: :cascade do |t|
-    t.bigint "bus_stop_id"
+    t.bigint "busstops_id"
     t.integer "order", null: false
+    t.integer "get_on_time_hour", null: false
+    t.integer "get_on_time_minute", null: false
+    t.integer "row", null: false
+    t.integer "stop_sequence"
+    t.datetime "arrival_time"
+    t.datetime "departure_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "get_on_time_hour"
-    t.integer "get_on_time_minute"
-    t.integer "row", null: false
-    t.index ["bus_stop_id"], name: "index_timetables_on_bus_stop_id"
+    t.index ["busstops_id"], name: "index_timetables_on_busstops_id"
   end
+
 end

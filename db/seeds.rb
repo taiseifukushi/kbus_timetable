@@ -125,7 +125,7 @@ def create_jikokuhyo(zipped_lists, _route)
 
     repeat_counts.times do |count|
       Timetable.create(
-        busstop_id: find_busstop_id(name),
+        busstops_id: find_busstop_id(name),
         order: index,
         get_on_time_hour: count + 7, # 7を足すことで時間を指定する
         get_on_time_minute: minute,
