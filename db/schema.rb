@@ -30,7 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_04_035048) do
 
   create_table "timetables", force: :cascade do |t|
     t.bigint "busstops_id"
-    t.integer "order", null: false
+    t.integer "order"
     t.integer "get_on_time_hour", null: false
     t.integer "get_on_time_minute", null: false
     t.integer "row", null: false
