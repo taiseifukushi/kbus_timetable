@@ -32,7 +32,6 @@ class MakeBusstopstable
   end
 
   def create_busstops_records(csv)
-    binding.pry
     csv.each do |row|
       create_busstops_record(row)
     end
@@ -40,13 +39,13 @@ class MakeBusstopstable
 
   def create_busstops_record(row)
     Busstop.create(
-      is_relay_point: is_relay_point.include?(row[:name]),
-      stop_id:        row[:stop_id],
-      stop_name:      row[:stop_name], # ここに条件式を入れたい複数登録されているバス停には1, 2を入れたい
-      stop_lat:       row[:stop_lat],
-      stop_lon:       row[:stop_lon],
-      zone_id:        row[:zone_id],
-      location_type:  row[:location_type],
+      is_relay_point: relay_point?(row),
+      stop_id:        row["stop_id"],
+      stop_name:      row["stop_name"], # ここに条件式を入れたい複数登録されているバス停には1, 2を入れたい
+      stop_lat:       row["stop_lat"],
+      stop_lon:       row["stop_lon"],
+      zone_id:        row["zone_id"],
+      location_type:  row["location_type"],
     )
   end
 
@@ -62,7 +61,7 @@ class MakeBusstopstable
   #   "#{record}".split(/:/)
   # end
 
-  def is_relay_point(record)
+  def relay_point?(record)
     relay_point.include?(record)
   end
 
@@ -86,10 +85,15 @@ REQUIRE_CSV_HEADER = lambda do
   ["arrival_time", "departure_time", "stop_id", "stop_sequence", "stop_headsign", "pickup_type", "drop_off_type"]
 end
 
+p "Create Oji Route"
 oji_table = MakeOjitable.new
 oji_table.create_busstops_records(oji_table.read_csv_file)
+p "Finish Create Oji Route"
 
+p "Create Tabata Route"
 tabata_table = MakeTabatatable.new
 tabata_table.create_busstops_records(tabata_table.read_csv_file)
+p "Finish Create Tabata Route"
 
-# docker compose run web bundle exec ruby db/create_busstops_data.rb
+# docker compose run web bundle exec rails runner db/create_busstops_data.rb
+# docker compose run web bundle exec rails db:drop db:create db:migrate
