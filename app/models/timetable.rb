@@ -1,11 +1,11 @@
 class Timetable < ApplicationRecord
-  belongs_to :bus_stop
+  belongs_to :busstop
 
   class << self
-    def wait_time_hash(get_on_bus_stop_id, get_off_bus_stop_id, relay_points)
-      get_on_record                         = record_boarding_time(get_on_bus_stop_id, current_time)
+    def wait_time_hash(get_on_busstop_id, get_off_busstop_id, relay_points)
+      get_on_record                         = record_boarding_time(get_on_busstop_id, current_time)
       relay_point_records                   = record_relay_point_time(relay_points, get_on_record)
-      get_off_record                        = record_get_off_time(get_off_bus_stop_id, get_on_record)
+      get_off_record                        = record_get_off_time(get_off_busstop_id, get_on_record)
       build_time_arriving_relay_point_struct = adjustment_time_sixty_minute_record(relay_point_records[0])
       build_time_leaving_relay_point_struct = adjustment_time_sixty_minute_record(relay_point_records[1])
       wait_time                             = wait_time(build_time_arriving_relay_point_struct,
@@ -25,18 +25,18 @@ class Timetable < ApplicationRecord
 
     def record_boarding_time(get_on_id, current_time)
       # 乗る時間のレコードを見つける
-      the_hour_records = Timetable.where(bus_stop_id: get_on_id).where(get_on_time_hour: current_time.hour)
+      the_hour_records = Timetable.where(busstop_id: get_on_id).where(get_on_time_hour: current_time.hour)
       close_to_record = search_close_to_record(the_hour_records)
     end
 
     def record_relay_point_time(relay_points, get_on_record)
       # 中継地点で降りる/乗る時間のレコードを探す
-      arriving_relay_point_id = BusStop.find_by(name: relay_points[0])[:id]
-      leaving_relay_point_on_id = BusStop.find_by(name: relay_points[1])[:id]
+      arriving_relay_point_id = Busstop.find_by(name: relay_points[0])[:id]
+      leaving_relay_point_on_id = Busstop.find_by(name: relay_points[1])[:id]
 
       same_row = Timetable.where(row: get_on_record[:row])
-      the_hour_records_arriving_relay_point = same_row.where(bus_stop_id: arriving_relay_point_id)
-      the_hour_records_leaving_relay_point = same_row.where(bus_stop_id: leaving_relay_point_on_id)
+      the_hour_records_arriving_relay_point = same_row.where(busstop_id: arriving_relay_point_id)
+      the_hour_records_leaving_relay_point = same_row.where(busstop_id: leaving_relay_point_on_id)
 
       [the_hour_records_arriving_relay_point, the_hour_records_leaving_relay_point].map do |record|
         # the_hour_records が Timetable::ActiveRecord_Relation(Timetableクラス)の場合に、`search_close_to_record`を呼ぶ
@@ -47,7 +47,7 @@ class Timetable < ApplicationRecord
     def record_get_off_time(get_off_id, get_on_record)
       # 目的のバス停で降りる時間のレコードを探す
       # binding.pry
-      the_hour_records = Timetable.where(bus_stop_id: get_off_id).where(row: get_on_record[:row])
+      the_hour_records = Timetable.where(busstop_id: get_off_id).where(row: get_on_record[:row])
       # the_hour_records が Timetable::ActiveRecord_Relation(Timetableクラス)の場合に、`search_close_to_record`を呼ぶ
       search_close_to_record(the_hour_records) unless the_hour_records.instance_of?(self)
     end

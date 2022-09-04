@@ -40,7 +40,7 @@ erDiagram
     }
     TIMETABLE {
         int id PK
-        int bus_stop_id FK
+        int busstop_id FK
         int get_on_time_hour
         int get_on_time_minute
         int order

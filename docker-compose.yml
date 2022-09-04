@@ -10,14 +10,13 @@ services:
   web:
     build: .
     command: |
-      bash -c "rm -f tmp/pids/server.pid && \
-        bundle exec rails db:drop db:create db:migrate db:seed && \
-        bundle exec rails s -p 3000 -b '0.0.0.0'"
+      bundle exec rails db:drop db:create db:migrate db:seed
+      bundle exec rails s -p 3001 -b '0.0.0.0'
     stdin_open: true
     tty: true
     volumes:
       - .:/rails_app
     ports:
-      - "3000:3000"
+      - "3001:3001"
     depends_on:
       - db

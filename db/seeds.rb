@@ -92,16 +92,16 @@ def zipping_list(staions, maiji_lists)
   zipped = staions.zip(maiji_lists)
 
   zipped.each_with_object([]) do |value, arg|
-    bus_stop_set = value[0]
+    busstop_set = value[0]
     timetable_set = value[1]
 
     timetable_set.map do |v|
-      arg << bus_stop_set + [v]
+      arg << busstop_set + [v]
     end
   end
 end
 
-def create_bus_stop(routes)
+def create_busstop(routes)
   type = routes == OJI_ROUTE ? "Oji" : "Tabata"
   klass = Module.const_get(type)
   routes.map do |route|
@@ -112,8 +112,8 @@ def create_bus_stop(routes)
   end
 end
 
-def find_bus_stop_id(name)
-  BusStop.find_by(name:).id
+def find_busstop_id(name)
+  Busstop.find_by(name:).id
 end
 
 def create_jikokuhyo(zipped_lists, _route)
@@ -125,7 +125,7 @@ def create_jikokuhyo(zipped_lists, _route)
 
     repeat_counts.times do |count|
       Timetable.create(
-        bus_stop_id: find_bus_stop_id(name),
+        busstop_id: find_busstop_id(name),
         order: index,
         get_on_time_hour: count + 7, # 7を足すことで時間を指定する
         get_on_time_minute: minute,
@@ -139,8 +139,8 @@ oji_zipping_list     = zipping_list(OJI_ROUTE, MAIJI_LIST_OJI)
 tabata_zipping_list  = zipping_list(TABATA_ROUTE, MAIJI_LIST_TABATA)
 
 p "rails db:seedを実行します"
-create_bus_stop(OJI_ROUTE)
-create_bus_stop(TABATA_ROUTE)
+create_busstop(OJI_ROUTE)
+create_busstop(TABATA_ROUTE)
 create_jikokuhyo(oji_zipping_list, OJI_ROUTE)
 create_jikokuhyo(tabata_zipping_list, TABATA_ROUTE)
 p "rails db:seedを実行しました"

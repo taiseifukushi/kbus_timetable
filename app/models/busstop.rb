@@ -1,4 +1,4 @@
-class BusStop < ApplicationRecord
+class Busstop < ApplicationRecord
   has_many :timetable
 
   OJI_ROUTE = %w[
@@ -56,10 +56,10 @@ class BusStop < ApplicationRecord
 
   class << self
     def calculate_wait_time(on, off)
-      get_on_bus_stop_id = BusStop.find_by(name: on).id
-      get_off_bus_stop_id = BusStop.find_by(name: off).id
+      get_on_busstop_id = Busstop.find_by(name: on).id
+      get_off_busstop_id = Busstop.find_by(name: off).id
       if norikae?(on, off)
-        Timetable.wait_time_hash(get_on_bus_stop_id, get_off_bus_stop_id, relay_points(on))
+        Timetable.wait_time_hash(get_on_busstop_id, get_off_busstop_id, relay_points(on))
       else
         non_wait_time_hash
       end

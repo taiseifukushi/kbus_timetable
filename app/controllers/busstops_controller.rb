@@ -1,8 +1,8 @@
-class BusStopsController < ApplicationController
+class BusstopsController < ApplicationController
   include Caluculater::Base
 
   before_action :initial_odj, only: %i[index]
-  before_action :bus_stop_list, only: %i[index]
+  before_action :busstop_list, only: %i[index]
 
   def index; end
 
@@ -29,12 +29,12 @@ class BusStopsController < ApplicationController
     on.present? && off.present?
   end
 
-  def bus_stop_list
-    @bus_stop = BusStop.all
+  def busstop_list
+    @busstop = Busstop.all
   end
 
   def calculate_wait_time(on, off)
-    @caluculation = BusStop.calculate_wait_time(on, off)
+    @caluculation = Busstop.calculate_wait_time(on, off)
   end
 
   def initial_odj
@@ -42,6 +42,6 @@ class BusStopsController < ApplicationController
   end
 
   def search_params
-    params.require(:bus_stop).permit(:get_on, :get_off)
+    params.require(:busstop).permit(:get_on, :get_off)
   end
 end

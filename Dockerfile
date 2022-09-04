@@ -1,6 +1,7 @@
 FROM ruby:3.1
 
 RUN mkdir /rails_app
+RUN echo "hoge"
 WORKDIR /rails_app
 COPY Gemfile /rails_app/Gemfile
 COPY Gemfile.lock /rails_app/Gemfile.lock
@@ -10,5 +11,5 @@ COPY . /rails_app
 
 COPY start.sh /usr/bin/
 RUN chmod a+x /usr/bin/start.sh
-EXPOSE 3000
+EXPOSE 3001
 CMD [ "sh", "start.sh" ]
