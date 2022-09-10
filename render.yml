@@ -8,6 +8,9 @@ services:
     branch: change-heroku-to-render # optional (defaults to master)
     healthCheckPath: /
     dockerfilePath: ./Dockerfile
+    envVars:
+      - key: RAILS_ENV
+        value: production
 
 databases:
   - name: production
