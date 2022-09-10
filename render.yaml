@@ -1,0 +1,22 @@
+databases:
+  - name: rails_app_production
+
+services:
+  - type: web
+    name: web
+    env: docker
+    dockerfilePath: ./docker/Dockerfile.production
+    plan: Free
+    branch: change-heroku-to-render
+    healthCheckPath: /
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSOWRD
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY_BASE
+        sync: false
