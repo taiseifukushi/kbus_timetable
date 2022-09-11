@@ -9,10 +9,6 @@ gem "rails", "~> 7.0.3"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
-# Use postgresql as the database for Active Record
-gem "pg"
-# gem "pg", "~> 1.1"
-
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
@@ -76,11 +72,9 @@ group :test do
 end
 
 gem "erb_lint", require: false # https://github.com/Shopify/erb-lint
-gem "ransack" # https://github.com/activerecord-hackery/ransack
 gem "rubocop"
 gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails
 gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
 # gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
 gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
 gem "sentry-rails"
-gem "sentry-ruby" # https://github.com/getsentry/sentry-ruby

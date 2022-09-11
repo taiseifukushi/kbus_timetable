@@ -46,5 +46,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_04_035048) do
     t.index ["busstops_id"], name: "index_timetables_on_busstops_id"
     t.index ["stop_id"], name: "index_timetables_on_stop_id"
   end
-
 end
