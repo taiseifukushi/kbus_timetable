@@ -1,29 +1,13 @@
-databases:
-  - name: rails_app_production
-
 services:
   - type: web
-    name: web
+    name: k-bus-norikae-app
     env: docker
     dockerfilePath: ./docker/Dockerfile.production
-    # dockerCommand: |
-    #   bundle exec rails assets:precompile
-    #   bundle exec rails assets:clean
-    #   bundle exec rails db:create db:migrate RAILS_ENV=production
-    #   sh start_production.sh
+    dockerCommand: bundle exec rails server
     plan: Free
     branch: change-heroku-to-render
-    healthCheckPath: /
     envVars:
       - key: RAILS_ENV
         value: production
-      - key: RAILS_APP_DATABASE_HOST
-        sync: false
-      - key: DATABASE_USERNAME
-        sync: false
-      - key: DATABASE_PASSOWRD
-        sync: false
-      - key: DATABASE_URL
-        sync: false
       - key: RAILS_MASTER_KEY
         sync: false
