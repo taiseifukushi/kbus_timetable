@@ -11,4 +11,5 @@ COPY . /rails_app
 COPY start_production.sh /usr/bin/
 RUN chmod a+x /usr/bin/start_production.sh
 EXPOSE 3001
+# RUN bundle exec rails db:create db:migrate RAILS_ENV=production
 CMD [ "sh", "start_production.sh" ]
