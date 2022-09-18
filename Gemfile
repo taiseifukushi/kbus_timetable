@@ -78,3 +78,6 @@ gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
 # gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
 gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
 gem "sentry-rails"
+
+# https://getbootstrap.jp/docs/5.0/getting-started/download/#rubygems
+# gem "bootstrap"

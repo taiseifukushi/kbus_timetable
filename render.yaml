@@ -3,7 +3,7 @@ services:
     name: k-bus-norikae-app
     env: docker
     dockerfilePath: ./docker/Dockerfile.production
-    dockerCommand: bundle exec rails server
+    dockerCommand: sh start_production.sh
     plan: Free
     branch: change-heroku-to-render
     envVars:
