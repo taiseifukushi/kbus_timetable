@@ -1,3 +1,6 @@
 Rails.application.configure do
-  config.hosts << "k-bus-norikae-app.onrender.com"
+  hosts = ["k-bus-norikae-app.onrender.com", "0.0.0.0"]
+  hosts.each do |host|
+    config.hosts << host
+  end
 end

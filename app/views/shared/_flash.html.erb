@@ -1,11 +1,14 @@
+<%# https://v1.tailwindcss.com/components/alerts %>
 <div class="flash-messages">
   <% flash.each do |type, message| %>
     <% if type == "notice" %>
-      <div class="notice">
+      <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative">
+      <%# <div class="notice"> %>
         <%= message %>
       </div>
     <% else %>
-      <div class="alert">
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+      <%# <div class="alert"> %>
         <%= message %>
       </div>
     <% end %>

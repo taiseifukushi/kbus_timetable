@@ -6,6 +6,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -14,6 +15,7 @@
       <%= render "shared/flash" %>
     </turbo-frame>
     <%= render "shared/header" %>
+    <%= render "shared/header_tailwind" %>
     <%= yield %>
     <%= render "shared/footer" %>
   </body>
