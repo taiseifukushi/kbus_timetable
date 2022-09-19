@@ -79,5 +79,5 @@ gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
 gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
 gem "sentry-rails"
 
-# https://getbootstrap.jp/docs/5.0/getting-started/download/#rubygems
-# gem "bootstrap"
+# https://tailwindcss.com/docs/guides/ruby-on-rails
+gem "tailwindcss-rails"

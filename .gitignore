@@ -33,3 +33,6 @@
 .vscode
 .env
 .env.production
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
