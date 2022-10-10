@@ -81,3 +81,9 @@ gem "sentry-rails"
 
 # https://tailwindcss.com/docs/guides/ruby-on-rails
 gem "tailwindcss-rails"
+
+# https://github.com/active-hash/active_hash
+gem "active_hash"
+
+# https://github.com/ksss/active_tsv
+gem "active_tsv"

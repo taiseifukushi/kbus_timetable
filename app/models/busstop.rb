@@ -1,4 +1,4 @@
-class Busstop < ApplicationModel
+class Busstop < ActiveTsv::Base
   # has_many :timetable
 
   # OJI_ROUTE = %w[
