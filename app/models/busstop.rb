@@ -1,5 +1,6 @@
 class Busstop < ActiveTsv::Base
-  # has_many :timetable
+  self.table_path = "data/csv/busstops.csv"
+  has_many :timetable
 
   # OJI_ROUTE = %w[
   #   JR王子駅1

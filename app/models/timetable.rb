@@ -1,5 +1,6 @@
 class Timetable < ApplicationModel
-  # belongs_to :busstop
+  self.table_path = "data/csv/timetable.csv"
+  belongs_to :busstop
 
   # class << self
   #   def wait_time_hash(get_on_busstop_id, get_off_busstop_id, relay_points)

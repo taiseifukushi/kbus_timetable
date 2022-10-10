@@ -1,5 +1,5 @@
-require "active_tsv"
+require 'active_csv'
 
-class ApplicationModel < ActiveTsv::Base
+class ApplicationModel < ActiveCsv::Base
   include ActiveModel::Model
 end

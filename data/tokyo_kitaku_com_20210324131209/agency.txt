@@ -1,0 +1,2 @@
+﻿agency_id,agency_name,agency_url,agency_timezone,agency_lang
+8000020131172,北区コミュニティ,http://www.city.kita.tokyo.jp/kurashi/bus/index.html,Asia/Tokyo,ja
