@@ -1,23 +1,20 @@
-<%= form_with(model: @busstop, url: "/", method: :get) do |f| %>
-<%# <%= form_with(model: @busstop, url: "/search", method: :get) do |f| %>
-  <% if @busstop%>
+<%= form_with(url: "/route", method: :get) do |f| %>
+  <%= f.label :title, "ルート" %>
+  <%= f.select :get_on, [["王子・駒込ルート", "R1"], ["田端循環ルート", "R2"], ["乗り換え", nil]], { include_blank: "選択して下さい" } %>
+  <%= f.submit "Enter" %>
+<% end %>
+<%= form_with(url: "/search", method: :get) do |f| %>
+  <% if @busstops %>
     <%= f.label :title, "乗車" %>
-    <%= f.select :get_on, @busstop&.map{|b| [b, b]}, { include_blank: "選択して下さい" } %>
+    <%= f.select :get_on, @busstops&.map{|b| [b[:stop_name], b[:stop_id]]}, { include_blank: "選択して下さい" } %>
     <%= f.label :title, "降車" %>
-    <%= f.select :get_on, @busstop&.map{|b| [b, b]}, { include_blank: "選択して下さい" } %>
+    <%= f.select :get_off, @busstops&.map{|b| [b[:stop_name], b[:stop_id]]}, { include_blank: "選択して下さい" } %>
   <% else %>
-    <% @busstop = [ "テスト1", "テスト2" ] %>
-  <%# <% else @busstop = { name: "テスト1" }%>
-    <%# <% binding.pry  %>
-    <%# <%= f.label :title, "乗車", class: "h4" %>
-    <%# <%= f.select :get_on, @busstop&.map{|b| [b, b]}, { include_blank: "選択して下さい" }, class: "form-select"%>
-    <%# <%= f.label :title, "降車", class: "h4" %>
-    <%# <%= f.select :get_on, @busstop&.map{|b| [b, b]}, { include_blank: "選択して下さい" }, class: "form-select" %>
+    <% @busstops = [ "テスト1", "テスト2" ] %>
     <%= f.label :title, "乗車" %>
-    <%= f.select :get_on, @busstop&.map{|b| [b, b]}, { include_blank: "選択して下さい" } %>
+    <%= f.select :get_on, @busstops&.map{|b| [b, b]}, { include_blank: "選択して下さい" } %>
     <%= f.label :title, "降車" %>
-    <%= f.select :get_on, @busstop&.map{|b| [b, b]}, { include_blank: "選択して下さい" } %>
+    <%= f.select :get_on, @busstops&.map{|b| [b, b]}, { include_blank: "選択して下さい" } %>
   <% end %>
-  <%# <%= f.submit "Enter", class: "btn btn-lg btn-primary"%>
   <%= f.submit "Enter" %>
 <% end %>

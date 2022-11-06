@@ -1,46 +1,30 @@
 class BusstopsController < ApplicationController
+  def index
+    @busstops ||= Busstop.busstops_cache
+  end
 
-  # before_action :initial_odj, only: %i[index]
-  # before_action :busstop_list, only: %i[index]
+  def search
+    @search_result = search_departure_time(search_params[:get_on], search_params[:get_off])
+    flash.now[:notice] = "更新しました"
+    render turbo_stream: [
+      turbo_stream.replace("caluculation_result", partial: "caluculation_result"),
+      turbo_stream.update("flash", partial: "shared/flash")
+    ]
+  end
 
-  # def index; end
+  # @param [String]: 
+  # @return [Array]: 
+  def search_route()
+    # 選択されたrouteのバス停を返す
+  end
 
-  # def search
-  #   on = search_params[:get_on]
-  #   off = search_params[:get_off]
-  #   if both_are_entered?(on, off)
-  #     @caluculation = calculate_wait_time(on, off)
-  #     flash.now[:notice] = "更新しました"
-  #     render turbo_stream: [
-  #       turbo_stream.replace("caluculation_result", partial: "caluculation_result"),
-  #       turbo_stream.update("flash", partial: "shared/flash")
-  #     ]
-  #   else
-  #     flash.now[:alert] = "バス停を選択してください"
-  #     render turbo_stream: [
-  #       turbo_stream.replace("both_are_not_entered", partial: "both_are_not_entered"),
-  #       turbo_stream.update("flash", partial: "shared/flash")
-  #     ]
-  #   end
-  # end
+  private
 
-  # def both_are_entered?(on, off)
-  #   on.present? && off.present?
-  # end
+  def search_departure_time(get_on:, get_off:)
+    # TimetableService.search_departure_time(get_on, get_off)
+  end
 
-  # def busstop_list
-  #   @busstop = Busstop.all
-  # end
-
-  # def calculate_wait_time(on, off)
-  #   @caluculation = Busstop.calculate_wait_time(on, off)
-  # end
-
-  # def initial_odj
-  #   @caluculation = { relay_point: nil, wait_time: false }
-  # end
-
-  # def search_params
-  #   params.require(:busstop).permit(:get_on, :get_off)
-  # end
+  def search_params
+    params.require(:bus_stop).permit(:get_on, :get_off)
+  end
 end
