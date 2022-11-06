@@ -1,7 +1,14 @@
 class BusstopsController < ApplicationController
   def index
     @busstops ||= Busstop.busstops_cache
+    # binding.pry
   end
+
+  def test
+    binding.pry
+    @test = params[:action]
+  end
+  # curl -X POST -H "Content-Type: application/json" -d "{"name" : "佐藤" , "mail" : "sato@example.com"}" https://27e1-2409-10-a080-100-ed4b-a847-86b8-f613.ngrok.io/
 
   def search
     @search_result = search_departure_time(search_params[:get_on], search_params[:get_off])
