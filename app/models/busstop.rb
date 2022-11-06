@@ -1,4 +1,6 @@
-class Busstop < ActiveTsv::Base
+require 'active_csv'
+
+class Busstop < ActiveCsv::Base
   self.table_path = "data/csv/busstops.csv"
   has_many :timetable
 

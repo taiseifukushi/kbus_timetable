@@ -13,7 +13,7 @@ gem "sprockets-rails"
 gem "puma", "~> 5.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
+# gem "importmap-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
@@ -51,6 +51,8 @@ group :development, :test do
   gem "factory_bot_rails" # https://github.com/thoughtbot/factory_bot
   gem "pry-rails"
   gem "rspec-rails"
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :development do
@@ -75,15 +77,15 @@ gem "erb_lint", require: false # https://github.com/Shopify/erb-lint
 gem "rubocop"
 gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails
 gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
-# gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
 gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
 gem "sentry-rails"
 
-# https://tailwindcss.com/docs/guides/ruby-on-rails
-gem "tailwindcss-rails"
+# gem "tailwindcss-rails" # https://tailwindcss.com/docs/guides/ruby-on-rails
+# gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
+# gem 'jsbundling-rails' # https://github.com/rails/jsbundling-rails
 
 # https://github.com/active-hash/active_hash
-gem "active_hash"
+# gem "active_hash"
 
 # https://github.com/ksss/active_tsv
 gem "active_tsv"
