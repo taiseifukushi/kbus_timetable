@@ -1,4 +1,4 @@
-require 'active_csv'
+require "active_csv"
 
 class Busstop < ActiveCsv::Base
   self.table_path = "data/csv/busstops.csv"

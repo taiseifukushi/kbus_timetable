@@ -47,12 +47,12 @@ gem "bootsnap", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "better_errors"
+  gem "binding_of_caller"
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails" # https://github.com/thoughtbot/factory_bot
   gem "pry-rails"
   gem "rspec-rails"
-  gem "better_errors"
-  gem "binding_of_caller"
 end
 
 group :development do
@@ -73,11 +73,11 @@ group :test do
   gem "webdrivers"
 end
 
+gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
 gem "erb_lint", require: false # https://github.com/Shopify/erb-lint
 gem "rubocop"
 gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails
 gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
-gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
 gem "sentry-rails"
 
 # gem "tailwindcss-rails" # https://tailwindcss.com/docs/guides/ruby-on-rails

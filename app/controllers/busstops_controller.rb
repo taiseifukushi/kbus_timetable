@@ -2,6 +2,7 @@ class BusstopsController < ApplicationController
   def index
     @busstops ||= Busstop.busstops_cache
     # binding.pry
+    render :index
   end
 
   def test
@@ -19,9 +20,9 @@ class BusstopsController < ApplicationController
     ]
   end
 
-  # @param [String]: 
-  # @return [Array]: 
-  def search_route()
+  # @param [String]:
+  # @return [Array]:
+  def search_route
     # 選択されたrouteのバス停を返す
   end
 
