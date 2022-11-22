@@ -10,6 +10,8 @@ linters:
   SelfClosingTag:
     enabled: true
     enforced_style: 'always'
+  SpaceIndentation:
+    
   Rubocop:
     enabled: true
     rubocop_config:

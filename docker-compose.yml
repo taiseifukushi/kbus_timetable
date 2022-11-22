@@ -1,23 +1,12 @@
 version: '3'
 services:
-  db:
-    image: postgres
-    environment: 
-      POSTGRES_PASSWORD: password
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-
   web:
-    build: .
-    command: |
-      bash -c "rm -f tmp/pids/server.pid && \
-        bundle exec rails db:drop db:create db:migrate db:seed && \
-        bundle exec rails s -p 3000 -b '0.0.0.0'"
-    stdin_open: true
-    tty: true
+    build:
+      dockerfile: ./docker/Dockerfile.dev
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 --binding=0.0.0.0"
     volumes:
       - .:/rails_app
     ports:
       - "3000:3000"
-    depends_on:
-      - db
+    tty: true
+    stdin_open: true
