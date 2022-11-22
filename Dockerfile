@@ -3,12 +3,6 @@ FROM ruby:3.1
 RUN mkdir /rails_app
 WORKDIR /rails_app
 
-# # https://github.com/nodesource/distributions/blob/master/README.md#using-debian-as-root-4
-# RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - &&\
-# apt-get install -y nodejs
-
-# RUN npm install --global yarn
-
 COPY Gemfile /rails_app/Gemfile
 COPY Gemfile.lock /rails_app/Gemfile.lock
 RUN bundle install

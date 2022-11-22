@@ -1,11 +1,11 @@
 services:
   - type: web
-    name: k-bus-norikae-app
+    name: web
     env: docker
-    dockerfilePath: ./docker/Dockerfile.prod
-    dockerCommand: sh start_prod.sh
+    dockerfilePath: ./Dockerfile
+    dockerCommand: sh start.sh
     plan: Free
-    branch: add_bootstrap
+    branch: add_active_csv
     envVars:
       - key: RAILS_ENV
         value: production

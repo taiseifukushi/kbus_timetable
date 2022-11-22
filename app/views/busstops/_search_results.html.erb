@@ -1,0 +1,23 @@
+<%= turbo_frame_tag "search_results" do %>
+  <% if @search_results %>
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">Card Header</p>
+        <button class="card-header-icon" aria-label="more options">
+        </button>
+      </header>
+    </div>
+    <% @search_results.each do |record| %>
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <ul>
+              <li><p><%= "stop_name: #{record[:stop_name]}" %></p></li>
+              <li><p><%= "arrival_time: #{record[:arrival_time]}" %></p></li>
+              <li><p><%= "departure_time: #{record[:departure_time]}" %></p></li>
+            </ul>
+          </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
