@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: web
+    env: docker
+    dockerfilePath: ./docker/Dockerfile.production
+    dockerCommand: sh start_production.sh
+    plan: Free
+    branch: main
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_MASTER_KEY
+        sync: false

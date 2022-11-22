@@ -9,10 +9,6 @@ gem "rails", "~> 7.0.3"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
-# Use postgresql as the database for Active Record
-gem "pg"
-# gem "pg", "~> 1.1"
-
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
@@ -51,8 +47,10 @@ gem "bootsnap", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "better_errors"
+  gem "binding_of_caller"
   gem "debug", platforms: %i[mri mingw x64_mingw]
-  gem "factory_bot"
+  gem "factory_bot_rails" # https://github.com/thoughtbot/factory_bot
   gem "pry-rails"
   gem "rspec-rails"
 end
@@ -75,12 +73,19 @@ group :test do
   gem "webdrivers"
 end
 
+gem "dotenv-rails", groups: %i[development test] # https://github.com/bkeepers/dotenv
 gem "erb_lint", require: false # https://github.com/Shopify/erb-lint
-gem "ransack" # https://github.com/activerecord-hackery/ransack
 gem "rubocop"
 gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails
 gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
-# gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
-gem "dotenv-rails", groups: %i[ development test ] # https://github.com/bkeepers/dotenv
 gem "sentry-rails"
-gem "sentry-ruby" # https://github.com/getsentry/sentry-ruby
+
+# gem "tailwindcss-rails" # https://tailwindcss.com/docs/guides/ruby-on-rails
+# gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
+# gem 'jsbundling-rails' # https://github.com/rails/jsbundling-rails
+
+# https://github.com/active-hash/active_hash
+# gem "active_hash"
+
+# https://github.com/ksss/active_tsv
+gem "active_tsv"

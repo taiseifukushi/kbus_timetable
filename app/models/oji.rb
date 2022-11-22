@@ -1,2 +1,2 @@
-class Oji < BusStop
+class Oji < Busstop
 end
