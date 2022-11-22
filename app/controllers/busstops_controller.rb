@@ -7,13 +7,13 @@ class BusstopsController < ApplicationController
   def search
     if stop_name_selected?
       @search_results = Util::TimetableService.new(stop_id: search_params[:get_on]).call
-      flash.now[:notice] = "更新しました"
+      flash.now[:notice] = t("views.flash.notice")
       render turbo_stream: [
         turbo_stream.replace("search_results", partial: "search_results"),
         turbo_stream.update("flash", partial: "shared/flash")
       ]
     else
-      flash.now[:alert] = "バス停を選択してください"
+      flash.now[:alert] = t("views.flash.alert")
       render turbo_stream: [
         turbo_stream.update("flash", partial: "shared/flash")
       ]

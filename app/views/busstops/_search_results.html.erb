@@ -2,7 +2,7 @@
   <% if @search_results %>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Card Header</p>
+        <p class="card-header-title"><%= t("views.page.search.results.card.title") %></p>
         <button class="card-header-icon" aria-label="more options">
         </button>
       </header>
@@ -12,9 +12,9 @@
         <div class="card-content">
           <div class="content">
             <ul>
-              <li><p><%= "stop_name: #{record[:stop_name]}" %></p></li>
-              <li><p><%= "arrival_time: #{record[:arrival_time]}" %></p></li>
-              <li><p><%= "departure_time: #{record[:departure_time]}" %></p></li>
+              <li><p><%= t("views.page.search.results.card.stop_name", stop_name: record[:stop_name]) %></p></li>
+              <li><p><%= t("views.page.search.results.card.arrival_time", arrival_time: record[:arrival_time]) %></p></li>
+              <li><p><%= t("views.page.search.results.card.departure_time", departure_time: record[:departure_time]) %></p></li>
             </ul>
           </div>
       </div>

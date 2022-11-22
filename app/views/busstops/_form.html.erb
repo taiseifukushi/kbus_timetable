@@ -1,4 +1,4 @@
 <%= form_with(url: "/search", method: :get) do |f| %>
-  <%= f.select :get_on, @busstops&.map{|b| [b[:stop_name], b[:stop_id]]}, { include_blank: "選択して下さい" } %>
-<%= f.submit "Enter" %>
+  <%= f.select :get_on, @busstops&.map{|b| [b[:stop_name], b[:stop_id]]} %>
+<%= f.submit t("views.page.form.submit.button") %>
 <% end %>
