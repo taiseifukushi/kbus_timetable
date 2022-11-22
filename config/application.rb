@@ -29,6 +29,5 @@ module RailsApp
     #
     config.time_zone = "Tokyo"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.autoload_paths << "#{config.root}/lib/timetable/*.rb"
   end
 end
