@@ -12,6 +12,12 @@ class BusstopsController < ApplicationController
   # curl -X POST -H "Content-Type: application/json" -d "{"name" : "佐藤" , "mail" : "sato@example.com"}" https://27e1-2409-10-a080-100-ed4b-a847-86b8-f613.ngrok.io/
 
   def search
+    temp = search_params[:get_on]
+    binding.pry
+    # [5] pry(#<BusstopsController>)> temp
+    # => "S2"
+    # params
+    # #<ActionController::Parameters {"get_on"=>"S2", "commit"=>"Enter", "controller"=>"busstops", "action"=>"search"} permitted: false>
     @search_result = search_departure_time(search_params[:get_on], search_params[:get_off])
     flash.now[:notice] = "更新しました"
     render turbo_stream: [
@@ -33,6 +39,6 @@ class BusstopsController < ApplicationController
   end
 
   def search_params
-    params.require(:bus_stop).permit(:get_on, :get_off)
+    params.permit(:get_on)
   end
 end
