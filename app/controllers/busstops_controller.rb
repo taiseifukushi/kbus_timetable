@@ -6,7 +6,7 @@ class BusstopsController < ApplicationController
 
   def search
     binding.pry
-    @search_result = Timetable::TimetableService.new(stop_id: search_params[:get_on]).call
+    @search_result = Util::TimetableService.new(stop_id: search_params[:get_on]).call
     flash.now[:notice] = "更新しました"
     render turbo_stream: [
       turbo_stream.replace("search_result", partial: "search_result"),

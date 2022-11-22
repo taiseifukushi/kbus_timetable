@@ -1,6 +1,6 @@
-module Timetable
+module Util
   class TimetableService
-
+    
     # @params [String] busstopのid
     def initialize(stop_id:)
       @stop_id = stop_id
@@ -8,7 +8,7 @@ module Timetable
     
     # @return [Array]
     def call
-      just_after_record
+      just_after_records
     end
     
     private
@@ -21,25 +21,26 @@ module Timetable
       trip_id = search_close_to_record(stop_id)[:trip_id]
       Timetable.where(stop_id: stop_id, trip_id: trip_id)
     end
-
+    
     # @params [String]
     # @return [Timetable]
     # Todo: 2分探索で書き変えたい
     # instance method Array#bsearch
     # https://docs.ruby-lang.org/ja/latest/method/Array/i/bsearch.html
     def search_close_to_record(stop_id)
+      binding.pry
       timetable = Timetable.where(stop_id: stop_id)
-
+      
       timetable.min_by do |record|
         processed_arrival_time = processing_arrival_time(record[:arrival_time])
         (current_time - processed_arrival_time).abs
       end
     end
-
+  
     def processing_arrival_time(arrival_time)
       Util::TimeProcessor.processing_arrival_time(arrival_time)
     end
-
+    
     def current_time
       @current_time ||= Util::TimeProcessor.current_time
     end
