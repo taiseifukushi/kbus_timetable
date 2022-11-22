@@ -5,7 +5,7 @@ services:
     dockerfilePath: ./docker/Dockerfile.production
     dockerCommand: sh start_production.sh
     plan: Free
-    branch: add_active_csv
+    branch: main
     envVars:
       - key: RAILS_ENV
         value: production
