@@ -1,4 +1,19 @@
-<%= form_with(url: "/search", method: :get) do |f| %>
-  <%= f.select :get_on, @busstops&.map{|b| [b[:stop_name], b[:stop_id]]} %>
-<%= f.submit t("views.page.form.submit.button") %>
-<% end %>
+<div class="container my-5">
+  <h1 class="text-center mb-4"><%= t("views.page.form.title") %></h1>
+</div>
+<div class="form">
+  <%= form_with(url: search_path, method: "get") do |f| %>
+    <div class="input-group mb-3">
+      <%= f.select :get_on, @busstops&.map{|b| [b[:stop_name], b[:stop_id]]} %>
+    <button class="btn btn-outline-primary" type="submit"><%= t("views.page.form.submit.button") %></button>
+    </div>
+  <% end %>
+</div>
+
+<style>
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

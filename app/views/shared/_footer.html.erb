@@ -1,7 +1,33 @@
-<div>
-  <footer class="footer">
-    <div class="content has-text-centered">
-      <p><%= t("views.page.component.link_to") %><a href="https://github.com/husita-h/k_bus_norikae_app" target="_blank">Github Repository</p>
-    </div>
-  </footer>
-</div>
+<footer class="footer">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/" ><%= t("views.page.title") %></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/husita-h/k_bus_norikae_app" target="_blank">Github Repository</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.city.kita.tokyo.jp/d-shisetu/kurashi/bus/bus.html" target="_blank"><%= t("views.page.navbar.hp") %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.city.kita.tokyo.jp/d-shisetu/kurashi/bus/documents/2021_11_timetable_1.pdf" target="_blank"><%= t("views.page.navbar.timetabale_data_link") %></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+<style>
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+</style>
