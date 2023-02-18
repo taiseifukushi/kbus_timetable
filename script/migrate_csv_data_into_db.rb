@@ -13,7 +13,6 @@ Busstop.import(busstops_column, extract_busstops_csv)
 
 extract_timetable_csv.map do |row|
   stop_id = row[3]
-  Busstop.find_by(stop_id: stop_id)
   row << Busstop.find_by(stop_id: stop_id).id
 end
 

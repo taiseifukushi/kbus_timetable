@@ -8,8 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: run rspec
+    - name: Setup App
+      shell: bash
       run: |
         sudo docker-compose build
         sudo docker-compose up -d
-        sudo docker-compose exec -T app rspec
+        sudo docker-compose exec web rails db:create db:migrate
+        sudo docker-compose exec web rails db:create db:migrate RAILS_ENV=test
+      env:
+        RAILS_ENV: test
+    - name: Run RSpec
+      shell: bash
+      run:  |
+        sudo docker-compose exec app bundle exec rspec
