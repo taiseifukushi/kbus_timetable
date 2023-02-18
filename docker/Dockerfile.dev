@@ -1,6 +1,9 @@
 FROM ruby:3.1.2-buster
 
 RUN gem install bundler:2.3.26
+RUN gem install nokogiri --platform=ruby
+RUN bundle config set force_ruby_platform true
+
 RUN mkdir /rails_app
 WORKDIR /rails_app
 COPY Gemfile /rails_app/Gemfile
