@@ -81,3 +81,4 @@ gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
 gem "sentry-rails"
 
 gem "sqlite3"
+gem "activerecord-import"

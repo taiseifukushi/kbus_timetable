@@ -1,2 +1,0 @@
-class OjiRoute < Route
-end

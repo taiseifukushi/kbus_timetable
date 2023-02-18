@@ -1,8 +1,8 @@
 RSpec.describe BusstopsController, type: :controller do
   describe "GET #index" do
-    it "assigns @routes" do
+    it "assigns @busstops" do
       get :index
-      expect(assigns(:routes)).to eq(Route.busstops_cache)
+      expect(assigns(:busstops)).to eq(Busstop.busstops_cache)
     end
 
     it "renders the index template" do

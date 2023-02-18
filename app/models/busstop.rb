@@ -1,16 +1,16 @@
-class Route < ApplicationModel
+class Busstop < ApplicationRecord
   has_many :timetable
 
   class << self
     def busstops_cache
-      @routes ||= routes
+      @busstops ||= busstops
     end
 
     private
 
-    def routes
-      routes = Route.pluck(:stop_id, :stop_name)
-      routes.each_with_object([]) do |busstop, array|
+    def busstops
+      busstops = Busstop.pluck(:stop_id, :stop_name)
+      busstops.each_with_object([]) do |busstop, array|
         _hash = {}
         _hash[:stop_id]   = busstop[0]
         _hash[:stop_name] = busstop[1]

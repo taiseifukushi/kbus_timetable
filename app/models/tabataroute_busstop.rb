@@ -1,0 +1,2 @@
+class TabataBusstop < Busstop
+end

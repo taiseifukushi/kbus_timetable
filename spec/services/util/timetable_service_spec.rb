@@ -1,7 +1,7 @@
 RSpec.describe Util::TimetableService do
   describe "#call" do
     let(:service) { Util::TimetableService.new(stop_id: "123") }
-    let(:busstop) { create(:busstop, stop_id: "123", stop_name: "Test Route") }
+    let(:busstop) { create(:busstop, stop_id: "123", stop_name: "Test Busstop") }
     let(:timetable) do
       create(:timetable, stop_id: "123", trip_id: "111", arrival_time: "10:00:00", departure_time: "10:00:00")
       create(:timetable, stop_id: "123", trip_id: "222", arrival_time: "12:00:00", departure_time: "12:00:00")
@@ -27,7 +27,7 @@ RSpec.describe Util::TimetableService do
 
     it "returns the expected stop name" do
       result = service.call
-      expect(result[0][:stop_name]).to eq("Test Route")
+      expect(result[0][:stop_name]).to eq("Test Busstop")
     end
   end
 
@@ -94,7 +94,7 @@ RSpec.describe Util::TimetableService do
       end
 
       before do
-        create(:busstop, stop_id: "123", stop_name: "Test Route")
+        create(:busstop, stop_id: "123", stop_name: "Test Busstop")
         timetable_1
         timetable_2
       end
@@ -111,7 +111,7 @@ RSpec.describe Util::TimetableService do
         expect(result[0][:arrival_time]).to eq("10:00:00")
         expect(result[0][:departure_time]).to eq("10:00:00")
         expect(result[0][:stop_id]).to eq("123")
-        expect(result[0][:stop_name]).to eq("Test Route")
+        expect(result[0][:stop_name]).to eq("Test Busstop")
       end
     end
   end

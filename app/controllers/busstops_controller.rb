@@ -1,6 +1,6 @@
-class RoutesController < ApplicationController
+class BusstopsController < ApplicationController
   def index
-    @routes ||= Route.busstops_cache
+    @busstops ||= Busstop.busstops_cache
     render :index
   end
 

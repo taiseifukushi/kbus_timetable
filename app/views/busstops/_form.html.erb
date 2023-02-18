@@ -4,7 +4,7 @@
 <div class="form">
   <%= form_with(url: search_path, method: "get") do |f| %>
     <div class="input-group mb-3">
-      <%= f.select :get_on, @routes&.map{|b| [b[:stop_name], b[:stop_id]]} %>
+      <%= f.select :get_on, @busstops&.map{|b| [b[:stop_name], b[:stop_id]]} %>
     <button class="btn btn-outline-primary" type="submit"><%= t("views.page.form.submit.button") %></button>
     </div>
   <% end %>
