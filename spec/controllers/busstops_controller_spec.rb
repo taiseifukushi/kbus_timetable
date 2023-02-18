@@ -40,9 +40,9 @@ RSpec.describe BusstopsController, type: :controller do
         post :search, params: { get_on: "123" }
         expect(response).to have_http_status(:ok)
         expect(response.body).to include('id="search_results"')
-        expect(response.body).to include('data-turbo-temporary')
+        expect(response.body).to include("data-turbo-temporary")
         expect(response.body).to include('id="flash"')
-        expect(response.body).to include('data-turbo-temporary')
+        expect(response.body).to include("data-turbo-temporary")
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe BusstopsController, type: :controller do
         post :search, params: { get_on: nil }
         expect(response).to have_http_status(:ok)
         expect(response.body).to include('id="flash"')
-        expect(response.body).to include('data-turbo-temporary')
+        expect(response.body).to include("data-turbo-temporary")
       end
     end
   end

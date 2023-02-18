@@ -33,8 +33,12 @@ RSpec.describe Util::TimetableService do
 
   describe "#just_after_records" do
     let(:service) { Util::TimetableService.new(stop_id: "123") }
-    let(:timetable_1) { create(:timetable, stop_id: "123", trip_id: "111", arrival_time: "10:00:00", departure_time: "10:00:00") }
-    let(:timetable_2) { create(:timetable, stop_id: "123", trip_id: "222", arrival_time: "12:00:00", departure_time: "12:00:00") }
+    let(:timetable_1) do
+      create(:timetable, stop_id: "123", trip_id: "111", arrival_time: "10:00:00", departure_time: "10:00:00")
+    end
+    let(:timetable_2) do
+      create(:timetable, stop_id: "123", trip_id: "222", arrival_time: "12:00:00", departure_time: "12:00:00")
+    end
 
     before do
       timetable_1
@@ -57,8 +61,12 @@ RSpec.describe Util::TimetableService do
 
   describe "#search_close_to_record" do
     let(:service) { Util::TimetableService.new(stop_id: "123") }
-    let(:timetable_1) { create(:timetable, stop_id: "123", trip_id: "111", arrival_time: "10:00:00", departure_time: "10:00:00") }
-    let(:timetable_2) { create(:timetable, stop_id: "123", trip_id: "222", arrival_time: "12:00:00", departure_time: "12:00:00") }
+    let(:timetable_1) do
+      create(:timetable, stop_id: "123", trip_id: "111", arrival_time: "10:00:00", departure_time: "10:00:00")
+    end
+    let(:timetable_2) do
+      create(:timetable, stop_id: "123", trip_id: "222", arrival_time: "12:00:00", departure_time: "12:00:00")
+    end
 
     before do
       timetable_1
@@ -76,10 +84,14 @@ RSpec.describe Util::TimetableService do
 
   describe "private methods" do
     let(:service) { Util::TimetableService.new(stop_id: "123") }
-    
+
     describe "#processing_activetsv_relation" do
-      let(:timetable_1) { create(:timetable, stop_id: "123", trip_id: "111", arrival_time: "10:00:00", departure_time: "10:00:00") }
-      let(:timetable_2) { create(:timetable, stop_id: "123", trip_id: "222", arrival_time: "12:00:00", departure_time: "12:00:00") }
+      let(:timetable_1) do
+        create(:timetable, stop_id: "123", trip_id: "111", arrival_time: "10:00:00", departure_time: "10:00:00")
+      end
+      let(:timetable_2) do
+        create(:timetable, stop_id: "123", trip_id: "222", arrival_time: "12:00:00", departure_time: "12:00:00")
+      end
 
       before do
         create(:busstop, stop_id: "123", stop_name: "Test Busstop")

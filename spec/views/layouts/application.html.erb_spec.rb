@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "layouts/application.html.erb", type: :view do
   it "renders the page title" do
