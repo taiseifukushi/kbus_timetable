@@ -1,2 +1,0 @@
-class Tabata < Busstop
-end

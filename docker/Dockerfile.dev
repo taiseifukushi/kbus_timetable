@@ -14,4 +14,5 @@ COPY . /rails_app
 COPY start_dev.sh /usr/bin/
 RUN chmod a+x /usr/bin/start_dev.sh
 EXPOSE 3000
-CMD [ "sh", "start_dev.sh" ]
+
+CMD [ "sh", "script/start_production.sh" ]

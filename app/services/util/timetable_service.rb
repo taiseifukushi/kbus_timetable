@@ -22,7 +22,7 @@ module Util
         hash[:arrival_time]   = record[:arrival_time]
         hash[:departure_time] = record[:departure_time]
         hash[:stop_id]        = record[:stop_id]
-        hash[:stop_name]      = Busstop.where(stop_id: record[:stop_id]).last.stop_name # #find_byがサポートされていないため、#whereで実装する。https://github.com/ksss/active_tsv/blob/master/lib/active_tsv/querying.rb
+        hash[:stop_name]      = Route.where(stop_id: record[:stop_id]).last.stop_name # #find_byがサポートされていないため、#whereで実装する。https://github.com/ksss/active_tsv/blob/master/lib/active_tsv/querying.rb
         hash
       end
     end

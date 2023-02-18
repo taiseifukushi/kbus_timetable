@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "searches/new.html.erb", type: :view do
   before do
-    assign(:busstops, [{ stop_name: "Stop A", stop_id: 1 }, { stop_name: "Stop B", stop_id: 2 }])
+    assign(:routes, [{ stop_name: "Stop A", stop_id: 1 }, { stop_name: "Stop B", stop_id: 2 }])
   end
 
   it "displays the form" do

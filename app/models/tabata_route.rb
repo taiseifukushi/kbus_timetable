@@ -1,0 +1,2 @@
+class TabataRoute < Route
+end

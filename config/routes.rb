@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  root "busstops#index"
-  get "search", to: "busstops#search"
+  root "routes#index"
+  get "search", to: "routes#search"
 end

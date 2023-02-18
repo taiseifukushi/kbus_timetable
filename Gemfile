@@ -80,5 +80,4 @@ gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails
 gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
 gem "sentry-rails"
 
-# https://github.com/ksss/active_tsv
-gem "active_tsv"
+gem "sqlite3"
