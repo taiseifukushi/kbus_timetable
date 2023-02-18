@@ -80,12 +80,5 @@ gem "rubocop-rails", require: false # https://github.com/rubocop/rubocop-rails
 gem "rubocop-rspec", require: false # https://github.com/rubocop/rubocop-rspec
 gem "sentry-rails"
 
-# gem "tailwindcss-rails" # https://tailwindcss.com/docs/guides/ruby-on-rails
-# gem 'cssbundling-rails' # https://github.com/rails/cssbundling-rails
-# gem 'jsbundling-rails' # https://github.com/rails/jsbundling-rails
-
-# https://github.com/active-hash/active_hash
-# gem "active_hash"
-
 # https://github.com/ksss/active_tsv
 gem "active_tsv"
