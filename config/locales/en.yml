@@ -1,27 +1,14 @@
 en:
   views:
     page:
-      title: "Kita City Community Bus Timetable"
-      header:
-        title: "Kbus Timetable"
+      title: "北区コミュニティバス 発着時刻検索"
       navbar:
-        hp: Kita-City HP
-        timetabale_data_link: Timetable - ver.2021_11
-      component:
-        link_to: "link to "
+        repository:
+        hp: 
+          name: 北区HP
+        timetabale_data_link: 
+          name: 時刻表 - ver.2021_11
       form:
-        title: Please select a bus stop to board
+        title: Please select a boarding bus stop
         submit:
           button: Enter
-      search:
-        results:
-          card:
-            title: Departure time list
-            stop_name: "stop_name: %{stop_name}"
-            arrival_time: "arrival_time: %{arrival_time}"
-            departure_time: "departure_time: %{departure_time}"
-    flash:
-      notice: Updated .
-      alert: Please select .. !
-    attributes:
-

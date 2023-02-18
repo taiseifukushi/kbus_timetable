@@ -1,23 +1,23 @@
 <%= turbo_frame_tag "search_results" do %>
-  <% if @search_results %>
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title"><%= t("views.page.search.results.card.title") %></p>
-        <button class="card-header-icon" aria-label="more options">
-        </button>
-      </header>
-    </div>
-    <% @search_results.each do |record| %>
-      <div class="card">
-        <div class="card-content">
-          <div class="content">
-            <ul>
-              <li><p><%= t("views.page.search.results.card.stop_name", stop_name: record[:stop_name]) %></p></li>
-              <li><p><%= t("views.page.search.results.card.arrival_time", arrival_time: record[:arrival_time]) %></p></li>
-              <li><p><%= t("views.page.search.results.card.departure_time", departure_time: record[:departure_time]) %></p></li>
-            </ul>
-          </div>
+  <div class="container my-5">
+    <h1 class="text-center mb-4">Search Results</h1>
+    <% if @search_results %>
+      <ul class="list-group">
+        <% @search_results.each do |result| %>
+          <li class="list-group-item list-group-item-action flex-column align-items-start active">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><%= result[:stop_name] %></h5>
+              <small><%= result[:stop_name] %></small>
+              <small>Arrival Time: <%= result[:arrival_time] %></small>
+              <small>Departure Time: <%= result[:departure_time] %></small>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="alert alert-warning" role="alert">
+        No results found.
       </div>
     <% end %>
-  <% end %>
+  </div>
 <% end %>
