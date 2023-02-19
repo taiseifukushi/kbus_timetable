@@ -1,2 +1,2 @@
-class OjiRouteBusstop < Busstop
+class OjirouteBusstop < Busstop
 end

@@ -1,2 +1,2 @@
-class TabataBusstop < Busstop
+class TabatarouteBusstop < Busstop
 end

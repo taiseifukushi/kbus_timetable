@@ -3,7 +3,7 @@ services:
     name: web
     env: docker
     dockerfilePath: ./docker/Dockerfile.production
-    dockerCommand: ./script/start_production.sh
+    dockerCommand: ./start_production.sh
     plan: Free
     branch: staging
     envVars:
