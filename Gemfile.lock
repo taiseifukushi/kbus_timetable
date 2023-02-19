@@ -46,8 +46,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_tsv (0.3.2)
-      activesupport
     activejob (7.0.4.2)
       activesupport (= 7.0.4.2)
       globalid (>= 0.3.6)
@@ -56,6 +54,8 @@ GEM
     activerecord (7.0.4.2)
       activemodel (= 7.0.4.2)
       activesupport (= 7.0.4.2)
+    activerecord-import (1.4.1)
+      activerecord (>= 4.2)
     activestorage (7.0.4.2)
       actionpack (= 7.0.4.2)
       activejob (= 7.0.4.2)
@@ -271,6 +271,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    sqlite3 (1.6.0)
+      mini_portile2 (~> 2.8.0)
     stimulus-rails (1.2.1)
       railties (>= 6.0.0)
     thor (1.2.1)
@@ -304,7 +306,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_tsv
+  activerecord-import
   better_errors
   binding_of_caller
   bootsnap
@@ -325,6 +327,7 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails
   sprockets-rails
+  sqlite3
   stimulus-rails
   turbo-rails
   tzinfo-data

@@ -1,6 +1,5 @@
 # kbus_timetable
 
-
 ## 北区コミュニティバス(Kバス)
 
 - [北区コミュニティバス《愛称名Kバス》のご案内](https://www.city.kita.tokyo.jp/d-shisetu/kurashi/bus/bus.html)

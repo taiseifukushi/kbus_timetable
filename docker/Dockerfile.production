@@ -13,6 +13,6 @@ COPY . /rails_app
 
 COPY start_production.sh /usr/bin/
 RUN chmod a+x /usr/bin/start_production.sh
-
 EXPOSE 3000
-CMD [ "sh", "start_production.sh" ]
+
+CMD [ "sh", "script/start_production.sh" ]

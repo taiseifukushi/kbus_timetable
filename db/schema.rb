@@ -10,40 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_04_035048) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
+ActiveRecord::Schema[7.0].define(version: 2023_02_18_115742) do
   create_table "busstops", force: :cascade do |t|
     t.string "type"
-    t.boolean "is_relay_point", null: false
     t.string "stop_id", null: false
     t.string "stop_name", null: false
-    t.float "stop_lat", null: false
-    t.float "stop_lon", null: false
-    t.string "zone_id", null: false
     t.string "platform_code"
-    t.string "location_type"
+    t.string "stop_lat", null: false
+    t.string "stop_lon", null: false
+    t.string "zone_id", null: false
+    t.string "location_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "timetables", force: :cascade do |t|
-    t.bigint "busstops_id"
-    t.integer "order"
-    t.integer "get_on_time_hour", null: false
-    t.integer "get_on_time_minute", null: false
-    t.integer "row", null: false
+    t.string "trip_id", null: false
+    t.string "arrival_time", null: false
+    t.string "departure_time", null: false
     t.string "stop_id", null: false
-    t.datetime "arrival_time", null: false
-    t.datetime "departure_time", null: false
-    t.integer "stop_sequence"
-    t.string "stop_headsign"
-    t.string "pickup_type"
-    t.integer "drop_off_type"
+    t.string "stop_sequence", null: false
+    t.string "stop_headsign", null: false
+    t.string "pickup_type", null: false
+    t.string "drop_off_type", null: false
+    t.integer "busstop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["busstops_id"], name: "index_timetables_on_busstops_id"
-    t.index ["stop_id"], name: "index_timetables_on_stop_id"
+    t.index ["busstop_id"], name: "index_timetables_on_busstop_id"
   end
+
+  add_foreign_key "timetables", "busstops"
 end

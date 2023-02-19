@@ -1,7 +1,5 @@
-class Busstop < ApplicationModel
-  self.table_path = "#{Rails.root}/data/csv/busstops.csv"
+class Busstop < ApplicationRecord
   has_many :timetable
-  self.primary_key = "stop_id"
 
   class << self
     def busstops_cache

@@ -1,4 +1,3 @@
-class Timetable < ApplicationModel
-  self.table_path = "data/csv/timetable.csv"
+class Timetable < ApplicationRecord
   belongs_to :busstop
 end
